@@ -4,6 +4,7 @@ import { routes } from "./routes";
 import { Views } from "./views/index";
 import { DisplayCheck } from "./services/DisplayCheck";
 import { DataContext } from "./context/DataContext";
+import { HeaderRow } from "./components/header/header";
 
 export const App = () => {
   DisplayCheck.EnableDisplayCheck();
@@ -16,6 +17,7 @@ export const App = () => {
     <>
       <DataContext.Provider value={{ data, display, menu, setData, setMenu }}>
         <BrowserRouter>
+          <HeaderRow />
           <Switch>
             <Route path={routes.home}>
               <Views.Home />
