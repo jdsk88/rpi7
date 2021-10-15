@@ -1,33 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Switch, Route, Redirect } from "react-router-dom";
 import { routes } from "./routes";
 import { Views } from "./views/index";
+import { DisplayCheck } from "./services/DisplayCheck";
+import { DataContext } from "./context/DataContext";
 
 export const App = () => {
+  DisplayCheck.EnableDisplayCheck();
+  const initialData = [];
+  const [data, setData] = useState(initialData);
+  const [display] = useState(DisplayCheck.WH);
+  const [menu, setMenu] = useState(false);
+
   return (
     <>
-      <BrowserRouter>
-        <Switch>
-          <Route path={routes.home}>
-            <Views.Home />
-          </Route>
-          <Route path={routes.creator}>
-            <Views.ListCreator />
-          </Route>
-          <Route path={routes.dragable}>
-            <Views.DragableList />
-          </Route>
-          <Route path={routes.todolist}>
-            <Views.ListOfLists />
-          </Route>
-          <Route path={routes.todoview}>
-            <Views.SingleToDoList />
-          </Route>
-          <Route path={routes.nowhere}>
-            <Redirect to={routes.home} />
-          </Route>
-        </Switch>
-      </BrowserRouter>
+      <DataContext.Provider value={{ data, display, menu, setData, setMenu }}>
+        <BrowserRouter>
+          <Switch>
+            <Route path={routes.home}>
+              <Views.Home />
+            </Route>
+            <Route path={routes.creator}>
+              <Views.ListCreator />
+            </Route>
+            <Route path={routes.dragable}>
+              <Views.DragableList />
+            </Route>
+            <Route path={routes.todolist}>
+              <Views.ListOfLists />
+            </Route>
+            <Route path={routes.todoview}>
+              <Views.SingleToDoList />
+            </Route>
+            <Route path={routes.nowhere}>
+              <Redirect to={routes.home} />
+            </Route>
+          </Switch>
+        </BrowserRouter>
+      </DataContext.Provider>
     </>
   );
 };
