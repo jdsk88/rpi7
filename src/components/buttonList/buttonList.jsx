@@ -13,7 +13,7 @@ export const ButtonList = ({ Data, display }) => {
             color: "whitesmoke",
             width: "20%",
           }}
-          to={`/${key}`}
+          to={`/${listData[key][3]}`}
           key={key + listData[key][1]}
         >
           <div
