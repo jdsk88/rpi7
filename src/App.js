@@ -1,10 +1,7 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-import { SignIn } from "./components/SignIn/SignIn";
-import { SignUp } from "./components/Signup/Signup";
 import { UserContext } from "./context/UserContext";
-import { AuthService } from "./services/authorization/auth";
 import { routes } from "./routes";
 import { Views } from "./views/index";
 import { DataContext } from "./context/DataContext";

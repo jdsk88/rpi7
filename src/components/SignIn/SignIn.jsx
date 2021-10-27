@@ -3,8 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
@@ -15,9 +13,7 @@ import { useDispatch } from "react-redux";
 import { AuthService } from "../../services/authorization/auth";
 import { setLogged, setUserData } from "../../reducers/user";
 import { UserServices } from "../../services/users";
-import { Link, useHistory } from "react-router-dom";
-import { routes } from "../../routes";
-import { UserContext } from "../../context/UserContext";
+
 function Copyright(props) {
   return (
     <Typography
@@ -36,8 +32,7 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export const SignIn = ({ register, setRegister, setReset, reset }) => {
-  const history = useHistory();
+export const SignIn = ({ setRegister, setReset }) => {
   const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
@@ -100,10 +95,6 @@ export const SignIn = ({ register, setRegister, setReset, reset }) => {
               id="password"
               autoComplete="current-password"
             />
-            {/* <FormControlLabel
-              control={<Checkbox value="remember" color="primary" />}
-              label="Remember me"
-            /> */}
             <Button
               type="submit"
               fullWidth

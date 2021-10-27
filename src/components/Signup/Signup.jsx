@@ -3,24 +3,13 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
-import Link from "@mui/material/Link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { AuthService } from "../../services/authorization/auth";
-import { userReducers } from "../../reducers/user";
 import { UserServices } from "../../services/users";
-import { useHistory } from "react-router";
-import { routes } from "../../routes";
-// import { Link } from "react-router-dom";
-import { UserContext } from "../../context/UserContext";
-// import { userRegister } from "../../utils/user";
-// import { useHistory } from "react-router-dom";
 
 function Copyright(props) {
   return (
@@ -41,7 +30,6 @@ function Copyright(props) {
 const theme = createTheme();
 
 export const SignUp = ({ register, setRegister }) => {
-  const history = useHistory();
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);

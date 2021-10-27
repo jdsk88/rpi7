@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 import { DataContext } from "../../context/DataContext";

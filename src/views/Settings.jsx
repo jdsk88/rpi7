@@ -1,8 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import axios from "axios";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { DataContext } from "../context/DataContext";
-import { deviceServices } from "../services/devices";
 
 export const Settings = () => {
   const { data } = useContext(DataContext);

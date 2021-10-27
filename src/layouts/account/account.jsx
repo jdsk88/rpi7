@@ -1,9 +1,7 @@
 import React, { useState } from "react";
-import { BrowserRouter, Route, Switch } from "react-router-dom";
 import { PasswdReset } from "../../components/PasswdReset/PasswdReset";
 import { SignIn } from "../../components/SignIn/SignIn";
 import { SignUp } from "../../components/Signup/Signup";
-import { routes } from "../../routes";
 
 export const AccountLayout = () => {
   const [register, setRegister] = useState(false);
