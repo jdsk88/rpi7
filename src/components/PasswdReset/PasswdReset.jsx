@@ -10,6 +10,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { UserServices } from "../../services/users";
+
 function Copyright(props) {
   return (
     <Typography
@@ -51,7 +52,7 @@ export const PasswdReset = ({ register, setRegister, setReset }) => {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Type email and click below to reset password.
+            Enter your email
           </Typography>
           <Box
             component="form"

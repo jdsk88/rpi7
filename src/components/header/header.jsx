@@ -21,7 +21,7 @@ export const HeaderRow = () => {
   const [headerData] = useState({
     home: [icon.faHouseUser, "Dashboard", () => setMenu(false), "home"],
     settings: [icon.faCogs, "Settings", () => setMenu(false), "settings"],
-    logout: [icon.faCogs, "Settings", () => handleSignOut(), ""],
+    logout: [icon.faSignOutAlt, "LogOut", () => handleSignOut(), ""],
   });
 
   return (

@@ -10,6 +10,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { UserServices } from "../../services/users";
+import { useSnackbar } from "notistack";
+import Zoom from "@material-ui/core/Zoom";
 
 function Copyright(props) {
   return (
@@ -30,6 +32,18 @@ function Copyright(props) {
 const theme = createTheme();
 
 export const SignUp = ({ register, setRegister }) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const Snackbar = (msg, variant) => {
+    enqueueSnackbar(msg, {
+      variant,
+      preventDuplicate: true,
+      anchorOrigin: {
+        vertical: "top",
+        horizontal: "center",
+      },
+      TransitionComponent: Zoom,
+    });
+  };
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -39,9 +53,18 @@ export const SignUp = ({ register, setRegister }) => {
       email: data.get("email"),
       password: data.get("password"),
     };
-    UserServices.register(user).then(() => {});
-    console.log(user);
-    setRegister(false);
+    UserServices.register(user)
+      .then(() => {
+        Snackbar("Registration complete!", "success");
+        setRegister(false);
+      })
+      .catch((err) => {
+        if (err.response.status === 409) {
+          Snackbar("This email already reserved!", "error");
+        } else if (err.response.status === 400) {
+          Snackbar("All fields are required", "error");
+        }
+      });
   };
 
   return (
@@ -92,6 +115,7 @@ export const SignUp = ({ register, setRegister }) => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  type="email"
                   required
                   fullWidth
                   id="email"

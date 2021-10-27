@@ -13,6 +13,7 @@ import { useDispatch } from "react-redux";
 import { AuthService } from "../../services/authorization/auth";
 import { setLogged, setUserData } from "../../reducers/user";
 import { UserServices } from "../../services/users";
+import { useSnackbar } from "notistack";
 
 function Copyright(props) {
   return (
@@ -31,8 +32,11 @@ function Copyright(props) {
 }
 
 const theme = createTheme();
-
 export const SignIn = ({ setRegister, setReset }) => {
+  const { enqueueSnackbar } = useSnackbar();
+  const Snackbar = (msg, variant) => {
+    enqueueSnackbar(msg, { variant });
+  };
   const dispatch = useDispatch();
 
   const handleSubmit = (event) => {
@@ -42,13 +46,21 @@ export const SignIn = ({ setRegister, setReset }) => {
       email: data.get("email"),
       password: data.get("password"),
     };
-    UserServices.logIn(userData).then((resp) => {
-      dispatch(setUserData(resp.data));
-      AuthService.setToken(resp.data.token);
-      dispatch(setLogged());
-      AuthService.setUser(resp.data);
-      console.log("Successfully logged!");
-    });
+    UserServices.logIn(userData)
+      .then((resp) => {
+        dispatch(setUserData(resp.data));
+        AuthService.setToken(resp.data.token);
+        dispatch(setLogged());
+        AuthService.setUser(resp.data);
+        Snackbar("Login success!", "success");
+      })
+      .catch((err) => {
+        if (err.response.status === 409) {
+          Snackbar("Invaid email or password!", "error");
+        } else if (err.response.status === 400) {
+          Snackbar("All fields are required", "error");
+        }
+      });
   };
 
   return (
@@ -116,12 +128,11 @@ export const SignIn = ({ setRegister, setReset }) => {
                 </Button>
               </Grid>
               <Grid item>
-                <Button
+                <Button 
                   onClick={() => {
                     setRegister(true);
                   }}
-                  variant="body2"
-                >
+                variant="body2">
                   {"Don't have an account? Sign Up"}
                 </Button>
               </Grid>

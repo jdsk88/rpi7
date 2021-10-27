@@ -1,6 +1,6 @@
 {
-  "short_name": "ToDoList",
-  "name": "Multi session to do list application.",
+  "short_name": "Van Seller",
+  "name": "Your Business Manager",
   "icons": [
     {
       "src": "favicon.ico",
@@ -21,7 +21,7 @@
   "start_url": "./",
   "display": "fullscreen",
   "theme_color": "#000000",
-  "background_color": "black",
+  "background_color": "darkgray",
   "orientation": "portrait",
   "kiosk_enabled" : true,
   "kiosk_only" : true
