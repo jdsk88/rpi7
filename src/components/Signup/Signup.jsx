@@ -11,38 +11,16 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { UserServices } from "../../services/users";
 import { useSnackbar } from "notistack";
-import Zoom from "@material-ui/core/Zoom";
-
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <a href="http://iSter.pl/">iSter.pl</a>
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
+import { Link } from "react-router-dom";
+import { routes } from "../../routes";
+import { Copyright } from "../copyright/copyright";
 
 const theme = createTheme();
 
-export const SignUp = ({ register, setRegister }) => {
+export const SignUp = () => {
   const { enqueueSnackbar } = useSnackbar();
-  const Snackbar = (msg, variant) => {
-    enqueueSnackbar(msg, {
-      variant,
-      preventDuplicate: true,
-      anchorOrigin: {
-        vertical: "top",
-        horizontal: "center",
-      },
-      TransitionComponent: Zoom,
-    });
+  const Snackbar = (msg, variant, v) => {
+    enqueueSnackbar(msg, { variant });
   };
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -56,7 +34,6 @@ export const SignUp = ({ register, setRegister }) => {
     UserServices.register(user)
       .then(() => {
         Snackbar("Registration complete!", "success");
-        setRegister(false);
       })
       .catch((err) => {
         if (err.response.status === 409) {
@@ -144,18 +121,16 @@ export const SignUp = ({ register, setRegister }) => {
             >
               Sign Up
             </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Button
-                  onClick={() => {
-                    setRegister(!register);
-                  }}
-                  variant="body2"
-                >
-                  Already have an account? Sign in
-                </Button>
-              </Grid>
-            </Grid>
+
+            <Button
+              fullWidth
+              variant="contained"
+              component={Link}
+              to={routes.signin}
+              color="success"
+            >
+              Already have an account? Sign in
+            </Button>
           </Box>
         </Box>
         <Copyright sx={{ mt: 5 }} />

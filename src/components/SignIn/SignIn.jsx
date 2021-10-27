@@ -3,7 +3,6 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
 import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 import Typography from "@mui/material/Typography";
@@ -14,25 +13,13 @@ import { AuthService } from "../../services/authorization/auth";
 import { setLogged, setUserData } from "../../reducers/user";
 import { UserServices } from "../../services/users";
 import { useSnackbar } from "notistack";
+import { Link } from "react-router-dom";
+import { routes } from "../../routes";
+import { Copyright } from "../copyright/copyright";
 
-function Copyright(props) {
-  return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <a href="http://ister.pl/">iSter.pl</a>
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
-  );
-}
 
 const theme = createTheme();
-export const SignIn = ({ setRegister, setReset }) => {
+export const SignIn = () => {
   const { enqueueSnackbar } = useSnackbar();
   const Snackbar = (msg, variant) => {
     enqueueSnackbar(msg, { variant });
@@ -115,28 +102,26 @@ export const SignIn = ({ setRegister, setReset }) => {
             >
               Sign In
             </Button>
-            <Grid container>
-              <Grid item xs>
-                <Button
-                  onClick={() => {
-                    setRegister(false);
-                    setReset(true);
-                  }}
-                  variant="body2"
-                >
-                  Forgot password?
-                </Button>
-              </Grid>
-              <Grid item>
-                <Button 
-                  onClick={() => {
-                    setRegister(true);
-                  }}
-                variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Button>
-              </Grid>
-            </Grid>
+            <Button
+              fullWidth
+              sx={{ mt: 0, mb: 1 }}
+              variant="contained"
+              color="warning"
+              component={Link}
+              to={routes.reset}
+            >
+              Forgot password?
+            </Button>
+            <Button
+              component={Link}
+              to={routes.signup}
+              fullWidth
+              sx={{ mt: 0, mb: 1 }}
+              variant="contained"
+              color="success"
+            >
+              Need an account? Sign Up
+            </Button>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />

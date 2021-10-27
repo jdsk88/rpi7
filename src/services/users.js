@@ -1,10 +1,11 @@
 import api from "./api";
+import { authHeader } from "./authorization/header";
 const getUsers = () => {
   //   return api.get("/users");
 };
 
 const getUserBoard = () => {
-  //   return api.get("/users/welcome", { headers: authHeader() });
+    return api.get("/users/welcome", { headers: authHeader() });
 };
 
 const register = (params) => {

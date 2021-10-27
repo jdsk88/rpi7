@@ -1,6 +1,8 @@
 import axios from "axios";
 import { AuthService } from "./authorization/auth";
-const url = "http://192.168.0.16:8888/api";
+// const url = "http://85.222.120.170:8888/api";
+// const url = "http://192.168.43.55:8888/api";
+const url = "https://localhost:8989/api";
 const api = axios.create({
   baseURL: url,
 });

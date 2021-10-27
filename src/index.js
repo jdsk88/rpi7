@@ -15,7 +15,7 @@ ReactDOM.render(
       <SnackbarProvider
         preventDuplicate
         anchorOrigin={{
-          vertical: "top",
+          vertical: "bottom",
           horizontal: "center",
         }}
         TransitionComponent={Zoom}
