@@ -1,10 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import "./index.css";
-import { App } from "./App";
+import "./assets/styles/index.css";
+import { Root } from "./views/root";
 import { Provider } from "react-redux";
-import * as serviceWorker from "./serviceWorker";
-import reportWebVitals from "./reportWebVitals";
+import * as serviceWorker from "./services/index/serviceWorker";
+import reportWebVitals from "./services/index/reportWebVitals";
 import { store } from "../src/store/store";
 import { SnackbarProvider } from "notistack";
 import Zoom from "@material-ui/core/Zoom";
@@ -27,7 +27,7 @@ ReactDOM.render(
         }}
         maxSnack={3}
       >
-        <App />
+        <Root />
       </SnackbarProvider>
     </Provider>
   </React.StrictMode>,

@@ -11,5 +11,6 @@ export const routes = {
   signin: "/signin",
   signup: "/signup",
   reset: "/reset",
+  admin: "/admin",
   nowhere: "/",
 };
