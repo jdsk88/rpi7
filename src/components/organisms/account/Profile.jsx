@@ -12,15 +12,17 @@ import {
 import { AccountProfileDetails } from "./ProfileDetails";
 
 const AccountProfile = (props) => {
-  const [file, setFile] = useState({});
-  const user = {
-    avatar: file,
+  const [file, setFile] = useState([]);
+  console.log(file)
+  const [user,setUser] = useState({
+    avatar: "./logo512.png",
     city: "Los Angeles",
     country: "USA",
     jobTitle: "Senior Developer",
     name: "Katarina Smith",
     timezone: "GTM-7",
-  };
+  }) 
+
   return (
     <Card {...props}>
       <CardContent>
@@ -50,7 +52,7 @@ const AccountProfile = (props) => {
         </Box>
       </CardContent>
       <Divider />
-      <AccountProfileDetails setFile={setFile} />
+      <AccountProfileDetails setFile={setFile} setUser={setUser} />
     </Card>
   );
 };

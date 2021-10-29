@@ -33,6 +33,7 @@ const RenderList = ({ open, setOpen, setTitle }) => {
     <div>
       {Object.keys(firstListData).map((key) => (
         <ListItem
+        key={key}
           onClick={() => {
             setOpen(!open);
             if (firstListData[key][1]) {

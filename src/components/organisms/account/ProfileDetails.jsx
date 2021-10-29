@@ -26,7 +26,7 @@ const states = [
   },
 ];
 
-export const AccountProfileDetails = (props) => {
+export const AccountProfileDetails = ({props,setUser}) => {
   const [values, setValues] = useState({
     firstName: "Katarina",
     lastName: "Smith",

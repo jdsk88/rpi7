@@ -1,6 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { AuthService } from "../services/authorization/auth";
 
+
 const initialState = {
   isLogged: AuthService.getToken(),
   userData: { _id: "", first_name: "", last_name: "", email: "" },

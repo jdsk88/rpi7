@@ -10,9 +10,9 @@ export const Copyright = (props) => {
     >
       {"Copyright © "}
       <a href="http://ister.pl/" target="_blank"  rel="noreferrer">
-        iSter.pl
+        iSter inc.
       </a>{" "}
-      1988 - {new Date().getFullYear()}
+      2000 - {new Date().getFullYear()}
       {"."}
     </Typography>
   );

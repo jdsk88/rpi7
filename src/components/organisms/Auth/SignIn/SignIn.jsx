@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
-import { AuthService } from "../../../../services/authorization/auth";
+import { AuthService, userId } from "../../../../services/authorization/auth";
 import { setLogged, setUserData } from "../../../../reducers/user";
 import { useSnackbar } from "notistack";
 import { Link } from "react-router-dom";
@@ -36,6 +36,7 @@ export const SignIn = () => {
       .then((resp) => {
         dispatch(setUserData(resp.data));
         AuthService.setToken(resp.data.token);
+        userId.set(resp.data._id);
         dispatch(setLogged());
         AuthService.setUser(resp.data);
         Snackbar("Login success!", "success");

@@ -2,11 +2,11 @@ import api from "../api/api";
 
 import { authHeader } from "../authorization/header";
 const getUsers = () => {
-  //   return api.get("/users");
+  return api.get("/users", { headers: authHeader() });
 };
 
-const getUserBoard = () => {
-    return api.get("/users/welcome", { headers: authHeader() });
+const getUserBoard = (id) => {
+  return api.get(`/users/${id}`, { headers: authHeader() });
 };
 
 const register = (params) => {
@@ -14,17 +14,7 @@ const register = (params) => {
 };
 
 const logIn = (params) => {
-  return new Promise((resolve, reject) => {
-    api
-      .post(`/users/login`, params)
-      .then((resp) => {
-        resolve(resp);
-      })
-      .catch((err) => {
-        console.log(err);
-        reject(err);
-      });
-  });
+  return api.post(`/users/login`, params);
 };
 
 const passwdReset = (params) => {
@@ -37,3 +27,15 @@ export const UserServices = {
   logIn: logIn,
   passwdReset: passwdReset,
 };
+
+// //wysylasz żądanie do bazy danych na ulr /tasks/id jakie tam wpadnie
+// export const getTasks = async (id) => {
+//   return await api.get(`/tasks/${id}`, { headers: authHeader() });
+// };
+// //zbierasz dane z opowiedzi na żądanie
+// const user = getUser();
+// const tasks = getTasks(user.id).then((response)=>{
+//   //tuttaj jakies akcje np wrzucenie danych do inital state albo coś
+//   console.log(response)
+// }) ;
+// console.log(tasks)

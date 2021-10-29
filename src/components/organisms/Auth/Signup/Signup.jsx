@@ -10,14 +10,14 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useSnackbar } from "notistack";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import { Copyright } from "../../../atoms/copyright/copyright";
 import { UserServices } from "../../../../services/users/users";
 import { routes } from "../../../../routes";
-
 const theme = createTheme();
 
 export const SignUp = () => {
+  const history = useHistory();
   const { enqueueSnackbar } = useSnackbar();
   const Snackbar = (msg, variant, v) => {
     enqueueSnackbar(msg, { variant });
@@ -34,6 +34,7 @@ export const SignUp = () => {
     UserServices.register(user)
       .then(() => {
         Snackbar("Registration complete!", "success");
+        history.push(routes.signin);
       })
       .catch((err) => {
         if (err.response.status === 409) {
@@ -118,6 +119,7 @@ export const SignUp = () => {
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
+              color="success"
             >
               Sign Up
             </Button>

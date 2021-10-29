@@ -10,7 +10,7 @@ import { SnackbarProvider } from "notistack";
 import Zoom from "@material-ui/core/Zoom";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <>
     <Provider store={store}>
       <SnackbarProvider
         preventDuplicate
@@ -30,8 +30,8 @@ ReactDOM.render(
         <Root />
       </SnackbarProvider>
     </Provider>
-  </React.StrictMode>,
+  </>,
   document.getElementById("root")
 );
-reportWebVitals(console.log);
+reportWebVitals();
 serviceWorker.register();

@@ -23,6 +23,6 @@
   "theme_color": "#000000",
   "background_color": "darkgray",
   "orientation": "portrait",
-  "kiosk_enabled" : true,
-  "kiosk_only" : true
+  "kiosk_enabled": true,
+  "kiosk_only": true
 }

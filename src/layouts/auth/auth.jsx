@@ -14,12 +14,12 @@ export const AuthLayout = () => {
   return (
     <Router>
       <Switch>
-        <div
+        {/* <div
           style={{
             width: "100vw",
             maxHeight: "100vh",
           }}
-        >
+        > */}
           <Route path={routes.signin}>
             <SignIn />
           </Route>
@@ -32,7 +32,7 @@ export const AuthLayout = () => {
           <Route path={routes.nowhere}>
             <Redirect to={routes.signin} />
           </Route>
-        </div>
+        {/* </div> */}
       </Switch>
     </Router>
   );
