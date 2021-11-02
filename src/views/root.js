@@ -5,11 +5,14 @@ import { DataContext } from "../context/DataContext.js";
 import { selectUserLogged } from "../reducers/user.js";
 import { AuthLayout } from "../layouts/auth/auth.jsx";
 import { AppRouter } from "../components/organisms/AppRouter/AppRouter.jsx";
+import { DisplayCheck } from "../services/system/DisplayCheck.js";
 
 export const Root = () => {
   const { data } = useContext(DataContext);
   const { user } = useContext(UserContext);
   const isLogged = useSelector(selectUserLogged);
+  DisplayCheck.EnableDisplayCheck();
+  const display = DisplayCheck.WH;
 
   return (
     <>
@@ -17,7 +20,7 @@ export const Root = () => {
         <AuthLayout />
       ) : (
         <UserContext.Provider value={{ user }}>
-          <DataContext.Provider value={{ data }}>
+          <DataContext.Provider value={{ data, display }}>
             <AppRouter />
           </DataContext.Provider>
         </UserContext.Provider>

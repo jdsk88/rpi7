@@ -2,6 +2,7 @@ export const routes = {
   dashboard: "/dashboard",
   orders: "/orders",
   merchants: "/merchants",
+  productCreator: "/productCreator",
   products: "/products",
   employers: "/employers",
   reports: "/reports",
