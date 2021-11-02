@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
+import FolderIcon from '@mui/icons-material/Folder';
 import { useDispatch } from "react-redux";
 import {
   Box,
@@ -13,6 +14,7 @@ import {
   Input,
 } from "@material-ui/core";
 import { userData } from "../../../reducers/user";
+import { List, ListItem, ListItemIcon, ListItemText } from "@mui/material";
 
 export const AccountProfileDetails = (props) => {
   const uData = useSelector(userData);
@@ -21,16 +23,12 @@ export const AccountProfileDetails = (props) => {
   useEffect(() => {
     setUser(uData);
   }, [uData]);
+  
   return (
-    <>
-      <Card>
-        <CardHeader
-          subheader={`${user.role} at ${user.companyName}`}
-          title="Profile"
-        />
+    <>     
         <Divider />
         <CardContent>
-          <Grid container spacing={3}>
+          <Grid container spacing={1}>
             <Grid item md={6} xs={12}>
               <Typography>{user.role}</Typography>
             </Grid>
@@ -59,9 +57,21 @@ export const AccountProfileDetails = (props) => {
               <Typography>{user.payment}</Typography>
             </Grid>
           </Grid>
+          <List>
+      
+                <ListItem>
+                <ListItemIcon>
+                    <FolderIcon />
+                  </ListItemIcon>
+                  <ListItemText
+                    primary="Single-line item"
+                    secondary={'Secondary text'}
+                  />
+                </ListItem>,
+         
+            </List>
         </CardContent>
         <Divider />
-      </Card>
     </>
   );
 };

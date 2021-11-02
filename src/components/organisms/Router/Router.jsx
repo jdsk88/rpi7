@@ -6,6 +6,7 @@ import { Products } from "../../../views/Products";
 import { ProductCreator } from "../../../views/ProductCreator";
 import { AccountProfile } from "../account/Profile";
 import { token } from "../../../services/authorization/auth";
+import { DashBoard } from "../../../views/Dashboard";
 
 export const CRouter = () => {
   return (
@@ -14,7 +15,9 @@ export const CRouter = () => {
         <Route path={routes.admin}>
           <Admin />
         </Route>
-        <Route path={routes.dashboard}></Route>
+        <Route path={routes.dashboard}>
+          <DashBoard />
+        </Route>
         <Route path={routes.orders}></Route>
         <Route path={routes.merchants}>
           <h1>31gtedgdsahgdsa</h1>
