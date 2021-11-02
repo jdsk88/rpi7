@@ -12,24 +12,14 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import MenuIcon from "@mui/icons-material/Menu";
 import { listData } from "./listData";
 import renderList from "./listItems";
-import {
-  BrowserRouter as Router,
-  Route,
-  Switch,
-  Redirect,
-  Link,
-} from "react-router-dom";
-
+import { BrowserRouter as Router, Link } from "react-router-dom";
 import { routes } from "../../../routes";
-import { Admin } from "../../../views/Admin";
 import { createTheme, ListItemText, ThemeProvider } from "@material-ui/core";
-import { Profile } from "../../../views/Profile";
-import { Products } from "../../../views/Products";
-import { ProductCreator } from "../../../views/ProductCreator";
 import { ListItem, ListItemIcon } from "@mui/material";
-import { AuthService } from "../../../services/authorization/auth";
+import { AuthService, token, userId } from "../../../services/authorization/auth";
 import { useDispatch } from "react-redux";
 import { setLogged } from "../../../reducers/user";
+import { CRouter } from "../Router/Router";
 
 const drawerWidth = 240;
 
@@ -78,10 +68,11 @@ const DrawerHeader = styled("div")(({ theme }) => ({
   justifyContent: "flex-end",
 }));
 
-export const AppRouter = () => {
+export const Navigation = () => {
   const dispatch = useDispatch();
   const handleSignOut = () => {
-    AuthService.removeToken();
+    token.remove();
+    userId.remove();
     AuthService.removeUser();
     dispatch(setLogged());
     console.log("You were successfully logged out!");
@@ -141,8 +132,7 @@ export const AppRouter = () => {
             anchor="left"
             open={open}
           >
-            <DrawerHeader>
-            </DrawerHeader>
+            <DrawerHeader></DrawerHeader>
             <Divider />
             {renderList({ open, setOpen, setTitle }, userList)}
             <Divider />
@@ -167,36 +157,7 @@ export const AppRouter = () => {
           </Drawer>
           <Main open={open}>
             <DrawerHeader />
-            <Switch>
-              <Route path={routes.admin}>
-                <Admin />
-              </Route>
-              <Route path={routes.dashboard}>
-              </Route>
-              <Route path={routes.orders}></Route>
-              <Route path={routes.merchants}>
-                <h1>31gtedgdsahgdsa</h1>
-              </Route>
-              <Route path={routes.products}>
-                <Products />
-              </Route>
-              <Route path={routes.productCreator}>
-                <ProductCreator />
-              </Route>
-              <Route path={routes.employers}>
-                <h1>31gtedgdsahgdsa</h1>
-              </Route>
-              <Route path={routes.messages}></Route>
-              <Route path={routes.map}>
-                <h1>31gtedgdsahgdsa</h1>
-              </Route>
-              <Route path={routes.profile}>
-                <Profile />
-              </Route>
-              <Route path={routes.nowhere}>
-                <Redirect to={routes.dashboard} />
-              </Route>
-            </Switch>
+            <CRouter />
           </Main>
         </Box>
       </ThemeProvider>

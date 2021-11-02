@@ -32,3 +32,18 @@ export const HeaderRow = () => {
     </>
   );
 };
+
+
+
+Products.propTypes = {
+  products: PropTypes.func.isRequired
+}
+const getData = { getUser:  }
+
+
+const mapStateToProps = (state) => {
+  const { categories, products } = state;
+  console.log(state);
+  return { categories, products };
+}
+export default connect(mapStateToProps, getData)(Products);

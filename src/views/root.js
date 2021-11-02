@@ -1,19 +1,25 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { UserContext } from "../context/UserContext.js";
 import { DataContext } from "../context/DataContext.js";
-import { selectUserLogged } from "../reducers/user.js";
+import { fetchUserById, selectUserLogged } from "../reducers/user.js";
 import { AuthLayout } from "../layouts/auth/auth.jsx";
-import { AppRouter } from "../components/organisms/AppRouter/AppRouter.jsx";
+import { Navigation } from "../components/organisms/Navigation/Navigation.jsx";
 import { DisplayCheck } from "../services/system/DisplayCheck.js";
+import { useDispatch } from "react-redux";
+
+import { userId } from "../services/authorization/auth.js";
 
 export const Root = () => {
   const { data } = useContext(DataContext);
   const { user } = useContext(UserContext);
   const isLogged = useSelector(selectUserLogged);
   DisplayCheck.EnableDisplayCheck();
+  const dispatch = useDispatch();
   const display = DisplayCheck.WH;
-
+  useEffect(() => {
+    dispatch(fetchUserById(userId.get()));
+  }, []);
   return (
     <>
       {!isLogged ? (
@@ -21,7 +27,7 @@ export const Root = () => {
       ) : (
         <UserContext.Provider value={{ user }}>
           <DataContext.Provider value={{ data, display }}>
-            <AppRouter />
+            <Navigation />
           </DataContext.Provider>
         </UserContext.Provider>
       )}

@@ -23,5 +23,5 @@ export const token = {
 export const userId = {
   set: (id) => localStorage.setItem("userId", id),
   get: () => localStorage.getItem("userId"),
-  remove: () => localStorage.remove("userId"),
+  remove: () => localStorage.removeItem("userId"),
 };

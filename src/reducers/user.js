@@ -1,20 +1,48 @@
-import { createSlice } from "@reduxjs/toolkit";
-import { AuthService } from "../services/authorization/auth";
-
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { AuthService, token } from "../services/authorization/auth";
+import { UserServices } from "../services/users/users";
+// import { UserServices } from "../services/users/users";
 
 const initialState = {
-  isLogged: AuthService.getToken(),
-  userData: { _id: "", first_name: "", last_name: "", email: "" },
+  isLogged: token.get(),
+  userData: [],
 };
 
-export const userReducers = createSlice({
+export const fetchUserById = createAsyncThunk("user/setUserData", (id) => {
+  const response = UserServices.getUserBoard(id).then((r) => {
+    return r.data;
+  });
+  return response;
+});
+
+const userReducers = createSlice({
   name: "user",
   initialState,
   reducers: {
     setLogged: (state) => {
       return { ...state, isLogged: AuthService.getToken() };
     },
-    setUserData: (state, action) => {
+    // setUserData: (state, action) => {
+    //   return {
+    //     ...state,
+    //     userData: {
+    //       _id: action.payload._id,
+    //       first_name: action.payload.first_name,
+    //       last_name: action.payload.last_name,
+    //       email: action.payload.email,
+    //       companyData: action.payload.companyData,
+    //       tasks: action.payload.tasks,
+    //       payment: action.payload.payment,
+    //       sessionID: action.payload.sessionID,
+    //       dateOfRegistration: action.payload.dateOfRegistration,
+    //       meberStatus: action.payload.meberStatus,
+    //     },
+    //   };
+    // },
+  },
+
+  extraReducers: {
+    [fetchUserById.fulfilled.type]: (state, action) => {
       return {
         ...state,
         userData: {
@@ -22,6 +50,19 @@ export const userReducers = createSlice({
           first_name: action.payload.first_name,
           last_name: action.payload.last_name,
           email: action.payload.email,
+          phone: action.payload.phone,
+          street: action.payload.companyData[0].address.street,
+          zipCode: action.payload.companyData[0].address.zipCode,
+          city: action.payload.companyData[0].address.city,
+          companyName: action.payload.companyData[0].name,
+          vat: action.payload.companyData[0].vat,
+          tasks: action.payload.tasks,
+          payment: action.payload.payment.status,
+          sessionID: action.payload.sessionID,
+          dateOfRegistration: action.payload.dateOfRegistration,
+          meberStatus: action.payload.meberStatus,
+          avatar: action.payload.avatar,
+          role: action.payload.role,
         },
       };
     },
@@ -31,6 +72,5 @@ export const userReducers = createSlice({
 export const { setLogged, setUserData } = userReducers.actions;
 
 export const selectUserLogged = (state) => state.user.isLogged;
-export const selectUserData = (state) => state.user.userData;
-
+export const userData = (state) => state.user.userData;
 export default userReducers.reducer;

@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-
+import React, { useEffect, useState } from "react";
+import { userData } from "../../../reducers/user";
 import moment from "moment";
 import {
   Avatar,
@@ -10,51 +10,72 @@ import {
   Typography,
 } from "@material-ui/core";
 import { AccountProfileDetails } from "./ProfileDetails";
+import { useSelector } from "react-redux";
 
-const AccountProfile = (props) => {
-  const [file, setFile] = useState([]);
-  console.log(file)
-  const [user,setUser] = useState({
-    avatar: "./logo512.png",
-    city: "Los Angeles",
-    country: "USA",
-    jobTitle: "Senior Developer",
-    name: "Katarina Smith",
-    timezone: "GTM-7",
-  }) 
+export const AccountProfile = () => {
+  const uData = useSelector(userData);
+  const [user, setUser] = useState(uData);
+  console.log(user);
+  useEffect(() => {
+    setUser(uData);
+  }, [uData]);
 
   return (
-    <Card {...props}>
+    <Card>
       <CardContent>
         <Box
           sx={{
-            alignItems: "center",
             display: "flex",
-            flexDirection: "column",
+            justifyContent: "space-between",
+            alignItems: "center",
+            flexDirection: "row",
           }}
         >
           <Avatar
             src={user.avatar}
-            sx={{
-              height: 100,
-              width: 100,
-            }}
+            alt="avatar"
+            style={{ width: 128, height: 128 }}
           />
-          <Typography color="textPrimary" gutterBottom variant="h3">
-            {user.name}
-          </Typography>
-          <Typography color="textSecondary" variant="body1">
-            {`${user.city} ${user.country}`}
-          </Typography>
-          <Typography color="textSecondary" variant="body1">
-            {`${moment().format("hh:mm A")} ${user.timezone}`}
+          <Typography
+            color="textPrimary"
+            gutterBottom
+            variant="h4"
+            align="right"
+          >
+            {`${user.first_name} ${user.last_name}`}
           </Typography>
         </Box>
+        <Box
+          sx={{
+            alignItems: "flex-end",
+            display: "flex",
+            flexDirection: "column",
+          }}
+        >
+          <Typography color="textSecondary" variant="body1">
+            {/* {user.email} */}
+          </Typography>{" "}
+          <Typography color="textSecondary" variant="body1">
+            {/* {user.phone} */}
+          </Typography>
+          <Typography color="textSecondary" variant="body1">
+            {/* {`${moment().format("hh:mm A")} ${user.payment}`} */}
+            {/* {user.payment ? user.payment : ""} */}
+          </Typography>
+          <Typography color="textSecondary" variant="body1">
+            {/* {user.city ? user.city : ""} */}
+          </Typography>
+          <Typography color="textSecondary" variant="body1">
+            {/* {user.street ? user.street : ""} */}
+          </Typography>
+          <Typography color="textSecondary" variant="body1">
+            {/* {user.zipCode ? user.zipCode : ""} */}
+          </Typography>
+        </Box>
+
       </CardContent>
       <Divider />
-      <AccountProfileDetails setFile={setFile} setUser={setUser} />
+      <AccountProfileDetails />
     </Card>
   );
 };
-
-export default AccountProfile;

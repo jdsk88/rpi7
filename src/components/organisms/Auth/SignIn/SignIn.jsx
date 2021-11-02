@@ -9,8 +9,8 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import { useDispatch } from "react-redux";
-import { AuthService, userId } from "../../../../services/authorization/auth";
-import { setLogged, setUserData } from "../../../../reducers/user";
+import { AuthService, token, userId } from "../../../../services/authorization/auth";
+import { setLogged, fetchUserById } from "../../../../reducers/user";
 import { useSnackbar } from "notistack";
 import { Link } from "react-router-dom";
 import { Copyright } from "../../../atoms/copyright/copyright";
@@ -34,12 +34,14 @@ export const SignIn = () => {
     };
     UserServices.logIn(userData)
       .then((resp) => {
-        dispatch(setUserData(resp.data));
-        AuthService.setToken(resp.data.token);
-        userId.set(resp.data._id);
+        token.set(resp.data.token);
+        userId.set(resp.data._id)
+        dispatch(fetchUserById(userId.get()))
         dispatch(setLogged());
-        AuthService.setUser(resp.data);
-        Snackbar("Login success!", "success");
+        Snackbar(
+          ` Welcome ${resp.data.first_name} ${resp.data.last_name}`,
+          "success"
+        );
       })
       .catch((err) => {
         if (err.response.status === 409) {

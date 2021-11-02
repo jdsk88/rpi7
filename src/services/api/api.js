@@ -7,17 +7,17 @@ const api = axios.create({
   baseURL: url,
 });
 
-api.interceptors.request.use((config) => {
-  const token = AuthService.getToken();
+// api.interceptors.request.use((config) => {
+//   const token = AuthService.getToken();
 
-  if (token) {
-    return {
-      ...config,
-      headers: { ...config.headers, authorization: `Bearer ${token}` },
-    };
-  } else {
-    return config;
-  }
-});
+//   if (token) {
+//     return {
+//       ...config,
+//       headers: { ...config.headers, authorization: `x-access-token: ${token}` },
+//     };
+//   } else {
+//     return config;
+//   }
+// });
 
 export default api;

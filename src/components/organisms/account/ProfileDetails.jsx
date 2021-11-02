@@ -1,4 +1,6 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import {
   Box,
   Button,
@@ -7,150 +9,59 @@ import {
   CardHeader,
   Divider,
   Grid,
-  TextField,
+  Typography,
   Input,
 } from "@material-ui/core";
+import { userData } from "../../../reducers/user";
 
-const states = [
-  {
-    value: "alabama",
-    label: "Alabama",
-  },
-  {
-    value: "new-york",
-    label: "New York",
-  },
-  {
-    value: "san-francisco",
-    label: "San Francisco",
-  },
-];
-
-export const AccountProfileDetails = ({props,setUser}) => {
-  const [values, setValues] = useState({
-    firstName: "Katarina",
-    lastName: "Smith",
-    email: "demo@devias.io",
-    phone: "",
-    state: "Alabama",
-    country: "USA",
-  });
-
-  const handleChange = (event) => {
-    setValues({
-      ...values,
-      [event.target.name]: event.target.value,
-    });
-  };
-  const handleFile = (e) => {
-    console.log(e.target.files);
-  };
+export const AccountProfileDetails = (props) => {
+  const uData = useSelector(userData);
+  const [user, setUser] = useState(uData);
+  console.log(user);
+  useEffect(() => {
+    setUser(uData);
+  }, [uData]);
   return (
-    <form autoComplete="off" noValidate {...props}>
+    <>
       <Card>
-        <CardHeader subheader="The information can be edited" title="Profile" />
+        <CardHeader
+          subheader={`${user.role} at ${user.companyName}`}
+          title="Profile"
+        />
         <Divider />
         <CardContent>
           <Grid container spacing={3}>
             <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                helperText="Please specify the first name"
-                label="First name"
-                name="firstName"
-                onChange={handleChange}
-                required
-                value={values.firstName}
-                variant="outlined"
-              />
+              <Typography>{user.role}</Typography>
             </Grid>
             <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Last name"
-                name="lastName"
-                onChange={handleChange}
-                required
-                value={values.lastName}
-                variant="outlined"
-              />
+              <Typography>{user.email}</Typography>
             </Grid>
             <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Email Address"
-                name="email"
-                onChange={handleChange}
-                required
-                value={values.email}
-                variant="outlined"
-              />
+              <Typography>{user.phone}</Typography>
             </Grid>
             <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Phone Number"
-                name="phone"
-                onChange={handleChange}
-                type="number"
-                value={values.phone}
-                variant="outlined"
-              />
+              <Typography>{user.street}</Typography>
             </Grid>
             <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Country"
-                name="country"
-                onChange={handleChange}
-                required
-                value={values.country}
-                variant="outlined"
-              />
+              <Typography>{user.zipCode}</Typography>
             </Grid>
             <Grid item md={6} xs={12}>
-              <TextField
-                fullWidth
-                label="Select State"
-                name="state"
-                onChange={handleChange}
-                required
-                select
-                SelectProps={{ native: true }}
-                value={values.state}
-                variant="outlined"
-              >
-                {states.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </TextField>
+              <Typography>{user.city}</Typography>
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <Typography>{user.companyName}</Typography>
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <Typography>{user.vat}</Typography>
+            </Grid>
+            <Grid item md={6} xs={12}>
+              <Typography>{user.payment}</Typography>
             </Grid>
           </Grid>
         </CardContent>
         <Divider />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "flex-end",
-            p: 2,
-          }}
-        >
-          <Input
-            type={"file"}
-            onChange={(e) => {
-              handleFile(e);
-            }}
-          />
-          <Button fullWidth color="primary" variant="contained">
-            Save details
-          </Button>
-        </Box>
       </Card>
-    </form>
+    </>
   );
 };
-
-

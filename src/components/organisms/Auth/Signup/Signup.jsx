@@ -30,6 +30,7 @@ export const SignUp = () => {
       last_name: data.get("last_name"),
       email: data.get("email"),
       password: data.get("password"),
+      
     };
     UserServices.register(user)
       .then(() => {
