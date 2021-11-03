@@ -13,5 +13,7 @@ export const routes = {
   signup: "/signup",
   reset: "/reset",
   admin: "/admin",
+  about: "/about",
+  mydeals:"/mydeals",
   nowhere: "/",
 };

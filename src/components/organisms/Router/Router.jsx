@@ -4,25 +4,29 @@ import { routes } from "../../../routes";
 import { Admin } from "../../../views/Admin";
 import { Products } from "../../../views/Products";
 import { ProductCreator } from "../../../views/ProductCreator";
-import { AccountProfile } from "../account/Profile";
-import { token } from "../../../services/authorization/auth";
 import { DashBoard } from "../../../views/Dashboard";
+import { Profile } from "../../../views/Profile";
+import { About } from "../account/views/About";
+import { MyDeals } from "../account/views/MyDeals";
 
 export const CRouter = () => {
   return (
     <>
-      <Switch>
+      <Switch >
         <Route path={routes.admin}>
           <Admin />
+        </Route>
+        <Route path={routes.about}>
+          <About />
+        </Route>
+        <Route path={routes.mydeals}>
+          <MyDeals />
         </Route>
         <Route path={routes.dashboard}>
           <DashBoard />
         </Route>
         <Route path={routes.orders}></Route>
-        <Route path={routes.merchants}>
-          <h1>31gtedgdsahgdsa</h1>
-          {token.get()}
-        </Route>
+        <Route path={routes.merchants}> </Route>
         <Route path={routes.products}>
           <Products />
         </Route>
@@ -37,12 +41,12 @@ export const CRouter = () => {
           <h1>31gtedgdsahgdsa</h1>
         </Route>
         <Route path={routes.profile}>
-          <AccountProfile />
+          <Profile />
         </Route>
         <Route path={routes.nowhere}>
           <Redirect to={routes.dashboard} />
         </Route>
       </Switch>
-    </>
+    </ >
   );
 };

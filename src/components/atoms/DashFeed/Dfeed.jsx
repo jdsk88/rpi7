@@ -10,22 +10,24 @@ function preventDefault(event) {
 
 export const Dfeed = () => {
   return (
-    <Card>
+    <>
+      <Card>
         <CardContent>
-      <Typography component="h2" variant="h6" color="primary" gutterBottom>
-        props.children
-      </Typography>
-      <Typography component="p" variant="h4">
-        $3,024.00
-      </Typography>
-      <Typography color="text.secondary" sx={{ flex: 1 }}>
-        on 15 March, 2019
-      </Typography>
-   
-        <Link color="primary" href="#" onClick={preventDefault}>
-          View balance
-        </Link>
-    </CardContent>
-    </Card>
+          <Typography component="h2" variant="h6" color="primary" gutterBottom>
+            props.children
+          </Typography>
+          <Typography component="p" variant="h4">
+            $3,024.00
+          </Typography>
+          <Typography color="text.secondary" sx={{ flex: 1 }}>
+            on 15 March, 2019
+          </Typography>
+
+          <Link color="primary" href="#" onClick={preventDefault}>
+            View balance
+          </Link>
+        </CardContent>
+      </Card>
+    </>
   );
 };

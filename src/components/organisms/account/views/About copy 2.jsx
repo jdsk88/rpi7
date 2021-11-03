@@ -1,21 +1,26 @@
 import React, { useEffect, useState } from "react";
-import { userData } from "../../../reducers/user";
-import { Avatar, Divider } from "@material-ui/core";
+import { Avatar, Divider, ListItemIcon } from "@material-ui/core";
 import { useSelector } from "react-redux";
-import { profileData } from "./listData";
-import { RenderProfileList } from "./listItems";
 import { ListItem, ListItemAvatar, ListItemText } from "@mui/material";
-export const AccountProfile = () => {
+import { userData } from "../../../../reducers/user";
+import { ArrowBack } from "@material-ui/icons";
+import { useHistory } from "react-router-dom";
+import { routes } from "../../../../routes";
+
+export const About = () => {
   const uData = useSelector(userData);
   const [user, setUser] = useState(uData);
+  const history = useHistory();
   console.log(user);
   useEffect(() => {
     setUser(uData);
   }, [uData]);
-
   return (
     <>
       <ListItem>
+        <ListItemIcon onClick={()=>{history.push(routes.profile)}}>
+          <ArrowBack />
+        </ListItemIcon>
         <ListItemAvatar>
           <Avatar
             src={user.avatar}
@@ -29,7 +34,6 @@ export const AccountProfile = () => {
         />
       </ListItem>{" "}
       <Divider />
-      {RenderProfileList(profileData.profile)}
     </>
   );
 };

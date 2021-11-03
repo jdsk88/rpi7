@@ -5,17 +5,18 @@ const mainListData = {
   orders: [<icon.LocalActivity />, () => {}, "orders"],
   merchants: [<icon.StorefrontSharp />, () => {}, "merchants"],
   products: [<icon.Shop />, () => {}, "products"],
-  employers: [<icon.People />, () => {}, "employers"],
-  reports: [<icon.BarChart />, () => {}, "reports"],
   messages: [<icon.MessageSharp />, () => {}, "messages"],
   map: [<icon.Map />, () => {}, "map"],
 };
 
 const adminListData = {
   productCreator: [<icon.Dashboard />, () => {}, "productCreator"],
+  employers: [<icon.People />, () => {}, "employers"],
+  reports: [<icon.BarChart />, () => {}, "reports"],
 };
 
 const profileList = {
+  settings: [<icon.Settings />, () => {}, "settings"],
   profile: [<icon.People />, () => {}, "profile"],
 };
 export const listData = {

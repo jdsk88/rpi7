@@ -16,7 +16,11 @@ import { BrowserRouter as Router, Link } from "react-router-dom";
 import { routes } from "../../../routes";
 import { createTheme, ListItemText, ThemeProvider } from "@material-ui/core";
 import { ListItem, ListItemIcon } from "@mui/material";
-import { AuthService, token, userId } from "../../../services/authorization/auth";
+import {
+  AuthService,
+  token,
+  userId,
+} from "../../../services/authorization/auth";
 import { useDispatch } from "react-redux";
 import { setLogged } from "../../../reducers/user";
 import { CRouter } from "../Router/Router";
@@ -26,7 +30,7 @@ const drawerWidth = 240;
 const Main = styled("main", { shouldForwardProp: (prop) => prop !== "open" })(
   ({ theme, open }) => ({
     flexGrow: 1,
-    padding: theme.spacing(3),
+    padding: theme.spacing(0.5),
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -62,7 +66,7 @@ const AppBar = styled(MuiAppBar, {
 const DrawerHeader = styled("div")(({ theme }) => ({
   display: "flex",
   alignItems: "center",
-  padding: theme.spacing(0, 1),
+  padding: theme.spacing(0, 0),
   // necessary for content to be below app bar
   ...theme.mixins.toolbar,
   justifyContent: "flex-end",
@@ -134,11 +138,12 @@ export const Navigation = () => {
           >
             <DrawerHeader></DrawerHeader>
             <Divider />
-            {renderList({ open, setOpen, setTitle }, userList)}
-            <Divider />
+            <Typography sx={{ textAlign: "center" }}>Admin</Typography>
+            {/* <Divider /> */}
             {renderList({ open, setOpen, setTitle }, adminList)}
             <Divider />
-
+            {renderList({ open, setOpen, setTitle }, userList)}
+            <Divider />
             {renderList({ open, setOpen, setTitle }, profileList)}
             <ListItem
               onClick={() => {
@@ -155,7 +160,7 @@ export const Navigation = () => {
               <ListItemText primary={"Log out"} />
             </ListItem>
           </Drawer>
-          <Main open={open}>
+          <Main open={open} onClick={() => setOpen(false)}>
             <DrawerHeader />
             <CRouter />
           </Main>
