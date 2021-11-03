@@ -1,0 +1,21 @@
+.file::-webkit-file-upload-button {
+  visibility: hidden;
+}
+.file::before {
+  width: 40px;
+  height: 40px;
+  content: "📷";
+  font-size: 30px;
+  display: inline-block;
+  border: 0px solid #999;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+}
+.file:hover::before {
+  border-color: black;
+}
+.file:active::before {
+  background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
+}

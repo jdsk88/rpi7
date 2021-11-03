@@ -76,9 +76,8 @@ export const SocialFeed = ({ feed }) => {
     setReload(!reload);
   };
 
-  const handleExpandClick = (id) => {
+  const handleExpandClick = () => {
     setExpanded(!expanded);
-    document.getElementById(id).scrollIntoView();
   };
 
   return (
