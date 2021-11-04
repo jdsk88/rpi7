@@ -16,11 +16,7 @@ import { BrowserRouter as Router, Link } from "react-router-dom";
 import { routes } from "../../../routes";
 import { createTheme, ListItemText, ThemeProvider } from "@material-ui/core";
 import { ListItem, ListItemIcon } from "@mui/material";
-import {
-  AuthService,
-  token,
-  userId,
-} from "../../../services/authorization/auth";
+import { token, userId } from "../../../services/authorization/auth";
 import { useDispatch } from "react-redux";
 import { setLogged } from "../../../reducers/user";
 import { CRouter } from "../Router/Router";
@@ -77,7 +73,7 @@ export const Navigation = () => {
   const handleSignOut = () => {
     token.remove();
     userId.remove();
-    AuthService.removeUser();
+    token.remove();
     dispatch(setLogged());
     console.log("You were successfully logged out!");
   };

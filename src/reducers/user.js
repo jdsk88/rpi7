@@ -1,7 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { AuthService, token } from "../services/authorization/auth";
+import { token } from "../services/authorization/auth";
 import { UserServices } from "../services/users/users";
-// import { UserServices } from "../services/users/users";
 
 const initialState = {
   isLogged: token.get(),
@@ -20,25 +19,8 @@ const userReducers = createSlice({
   initialState,
   reducers: {
     setLogged: (state) => {
-      return { ...state, isLogged: AuthService.getToken() };
+      return { ...state, isLogged: token.get() };
     },
-    // setUserData: (state, action) => {
-    //   return {
-    //     ...state,
-    //     userData: {
-    //       _id: action.payload._id,
-    //       first_name: action.payload.first_name,
-    //       last_name: action.payload.last_name,
-    //       email: action.payload.email,
-    //       companyData: action.payload.companyData,
-    //       tasks: action.payload.tasks,
-    //       payment: action.payload.payment,
-    //       sessionID: action.payload.sessionID,
-    //       dateOfRegistration: action.payload.dateOfRegistration,
-    //       meberStatus: action.payload.meberStatus,
-    //     },
-    //   };
-    // },
   },
 
   extraReducers: {

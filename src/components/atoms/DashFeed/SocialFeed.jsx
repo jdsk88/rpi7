@@ -31,7 +31,8 @@ import {
 } from "@material-ui/core";
 import moment from "moment";
 import { Box } from "@mui/system";
-
+import { useDispatch } from "react-redux";
+import { addComment } from "../../../reducers/feeds";
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -50,23 +51,20 @@ export const SocialFeed = ({ feed }) => {
   useEffect(() => {
     setUser(uData);
   }, [uData]);
-
+  const dispatch = useDispatch();
   const [expanded, setExpanded] = useState(false);
 
   const handleAddComment = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const comment = {
+      const comment = {
       userId: user._id,
       userName: user.first_name,
       userAvatar: user.avatar,
       message: data.get("comment_msg"),
       dateOfComment: moment().format("lll"),
     };
-    console.log(comment);
-    // setFeed(feed.comments.push(comment))
-    feed.comments.push(comment);
-    setReload(!reload);
+    dispatch(addComment(comment));
   };
 
   const handleExpandClick = () => {
@@ -91,6 +89,7 @@ export const SocialFeed = ({ feed }) => {
       <CardMedia
         component="img"
         height="194"
+        style={{ objectFit: "scale-down" }}
         image={
           feed.images
             ? feed.images[0]
@@ -165,7 +164,7 @@ export const SocialFeed = ({ feed }) => {
             onSubmit={handleAddComment}
           >
             <TextField
-              require={true}
+              required
               label="comment message here"
               autoFocus
               name="comment_msg"
@@ -173,8 +172,8 @@ export const SocialFeed = ({ feed }) => {
               style={{ width: "80%" }}
               variant="outlined"
               size="small"
-            //   id={}
-              />
+              //   id={}
+            />
             <IconButton style={{ width: "5%" }}></IconButton>
             <Button type="submit" style={{ width: "10%" }} aria-label="share">
               <Send />

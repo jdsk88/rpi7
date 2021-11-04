@@ -6,29 +6,34 @@ import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
 import { useSelector } from "react-redux";
 import { userData } from "../reducers/user";
+import { feedsData } from "../reducers/feeds";
 import moment from "moment";
 import { DataContext } from "../context/DataContext";
+import { useSnackbar } from "notistack";
+import { useDispatch } from "react-redux";
+import { add } from "../reducers/feeds";
 
 export const DashBoard = () => {
   const { location } = useContext(DataContext);
-  console.log(location)
+  console.log(location);
   const uData = useSelector(userData);
+  const fData = useSelector(feedsData.get);
+
   const [user, setUser] = useState(uData);
   const [reload, setReload] = useState(false);
 
-  const [feeds] = useState([]);
+  // const [feeds] = useState([]);
+  const dispatch = useDispatch();
 
-  const [file, setFile] = useState([]);
-  // console.log(file.preview.url)
-  const onFilesChange = (files) => {
-    console.log(files);
-    setFile(files[0]);
+  const [files, setFiles] = useState([]);
+  console.log(files);
+  const onFilesChange = async (files) => {
+    setFiles(files);
   };
-
-  // const onFilesError = (error, file) => {
-  //   console.log("error code " + error.code + ": " + error.message);
-  // };
-
+  const { enqueueSnackbar } = useSnackbar();
+  const Snackbar = (msg, variant, v) => {
+    enqueueSnackbar(msg, { variant });
+  };
   const handleAddFeed = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -40,12 +45,10 @@ export const DashBoard = () => {
       subTitle: moment().format("lll"),
       content: data.get("feed_msg"),
       comments: [],
-      images: [window.URL.createObjectURL(file)],
+      images: files,
     };
-    // setFeeds([...feeds, feed]);
-    feeds.push(feed);
-    console.log(feed);
-    setReload(!reload);
+    console.log(feed.images);
+    dispatch(add(feed));
   };
 
   useEffect(() => {
@@ -55,7 +58,7 @@ export const DashBoard = () => {
   return (
     <>
       <div style={{ marginBottom: 50 }}>
-        {feeds.map((feed) => (
+        {fData.map((feed) => (
           <SocialFeed key={Math.random(11111, 22222)} feed={feed} />
         ))}
       </div>
@@ -79,7 +82,7 @@ export const DashBoard = () => {
         onSubmit={handleAddFeed}
       >
         <TextField
-          require={true}
+          required
           label="Whats up ... ?"
           name="feed_msg"
           id="feed_msg"
@@ -91,7 +94,6 @@ export const DashBoard = () => {
           style={{ width: "12.5%" }}
           type="file"
           className={"file"}
-          disableUnderline
           accept={".jpg, .jpeg, .mp4, .png"}
           multiple
           onChange={(e) => {

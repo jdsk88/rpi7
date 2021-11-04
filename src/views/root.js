@@ -20,7 +20,7 @@ export const Root = () => {
   const display = DisplayCheck.WH;
   const [location, setLocation] = useState([]);
   const [formattedAddress, setFormattedAddress] = useState();
-  const Geolocation = () => {
+  useEffect(() => {
     navigator.geolocation.getCurrentPosition((position) => {
       geo
         .decoder(
@@ -44,9 +44,7 @@ export const Root = () => {
       console.log(geolocation);
       setLocation(geolocation);
     });
-  };
-
-  Geolocation();
+  }, [formattedAddress]);
 
   useEffect(() => {
     dispatch(fetchUserById(userId.get()));
