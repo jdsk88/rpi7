@@ -2,19 +2,20 @@ import { IconButton, TextField } from "@material-ui/core";
 import { Send } from "@material-ui/icons";
 import { Box } from "@mui/system";
 import { SocialFeed } from "../components/atoms/DashFeed/SocialFeed";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
 import { useSelector } from "react-redux";
 import { userData } from "../reducers/user";
 import moment from "moment";
+import { DataContext } from "../context/DataContext";
 
 export const DashBoard = () => {
+  const { location } = useContext(DataContext);
+  console.log(location)
   const uData = useSelector(userData);
   const [user, setUser] = useState(uData);
   const [reload, setReload] = useState(false);
-  useEffect(() => {
-    setUser(uData);
-  }, [uData]);
+
   const [feeds] = useState([]);
 
   const [file, setFile] = useState([]);
@@ -28,29 +29,11 @@ export const DashBoard = () => {
   //   console.log("error code " + error.code + ": " + error.message);
   // };
 
-  const [location, setLocation] = useState([]);
-  // const [reload, setReload] = useState(false);
-  const Geolocation = () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      let latitude = position.coords.latitude;
-      let longitude = position.coords.longitude;
-      // let accuracy = position.coords.accuracy;
-      // let altitude = position.coords.altitude;
-      // let altitudeAccuracy = position.coords.altitudeAccuracy;
-      // let heading = position.coords.heading;
-      // let speed = position.coords.speed;
-      setLocation({ latitude, longitude });
-      // setReload(!reload);
-    });
-  };
-  Geolocation();
-  console.log(location);
-
   const handleAddFeed = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const feed = {
-      location: location,
+      location: location.formattedAddress,
       userId: user._id,
       avatar: user.avatar,
       title: user.first_name + " " + user.last_name,
@@ -59,12 +42,15 @@ export const DashBoard = () => {
       comments: [],
       images: [window.URL.createObjectURL(file)],
     };
-
     // setFeeds([...feeds, feed]);
     feeds.push(feed);
     console.log(feed);
     setReload(!reload);
   };
+
+  useEffect(() => {
+    setUser(uData);
+  }, [uData]);
 
   return (
     <>

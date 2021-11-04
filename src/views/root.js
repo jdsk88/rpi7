@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { UserContext } from "../context/UserContext.js";
 import { DataContext } from "../context/DataContext.js";
@@ -9,6 +9,7 @@ import { DisplayCheck } from "../services/system/DisplayCheck.js";
 import { useDispatch } from "react-redux";
 
 import { userId } from "../services/authorization/auth.js";
+import { geo } from "../services/geocoding/geocoding.js";
 
 export const Root = () => {
   const { data } = useContext(DataContext);
@@ -17,16 +18,47 @@ export const Root = () => {
   DisplayCheck.EnableDisplayCheck();
   const dispatch = useDispatch();
   const display = DisplayCheck.WH;
+  const [location, setLocation] = useState([]);
+  const [formattedAddress, setFormattedAddress] = useState();
+  const Geolocation = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      geo
+        .decoder(
+          "json",
+          "AIzaSyA2DGhaeOSP81lr0w7kjXoaSW-pFPBmbEc",
+          position.coords.latitude,
+          position.coords.longitude
+        )
+        .then((r) => setFormattedAddress(r.data.results[0].formatted_address));
+
+      const geolocation = {
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        accuracy: position.coords.accuracy,
+        altitude: position.coords.altitude,
+        altitudeAccuracy: position.coords.altitudeAccuracy,
+        heading: position.coords.heading,
+        speed: position.coords.speed,
+        formattedAddress: formattedAddress,
+      };
+      console.log(geolocation);
+      setLocation(geolocation);
+    });
+  };
+
+  Geolocation();
+
   useEffect(() => {
     dispatch(fetchUserById(userId.get()));
   }, [dispatch]);
+
   return (
     <>
       {!isLogged ? (
         <AuthLayout />
       ) : (
         <UserContext.Provider value={{ user }}>
-          <DataContext.Provider value={{ data, display }}>
+          <DataContext.Provider value={{ data, display, location }}>
             <Navigation />
           </DataContext.Provider>
         </UserContext.Provider>
