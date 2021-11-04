@@ -2,19 +2,20 @@ import { createSlice } from "@reduxjs/toolkit";
 import { feedsServices } from "../services/feeds/feeds";
 
 const initialState = [];
+const addFeed = (state, action) => {
+  return [...state, action.payload];
+};
+const addFComment = (state, action) => {
+  console.log(action.payload.feedIndex)
+  state[action.payload.feedIndex].comments.push(action.payload);
+};
 
 const feedsReducers = createSlice({
   name: "feeds",
   initialState,
   reducers: {
-    add: (state, action) => {
-      console.log(action.payload.comments);
-      return [...state, action.payload];
-    },
-    addComment: (state, action) => {
-      console.log(state);
-      return [...state, action.payload];
-    },
+    add: addFeed,
+    addComment: addFComment,
   },
 });
 

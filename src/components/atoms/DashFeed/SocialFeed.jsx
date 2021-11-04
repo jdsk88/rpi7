@@ -47,17 +47,16 @@ const ExpandMore = styled((props) => {
 export const SocialFeed = ({ feed }) => {
   const uData = useSelector(userData);
   const [user, setUser] = useState(uData);
-  const [reload, setReload] = useState(false);
   useEffect(() => {
     setUser(uData);
   }, [uData]);
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState(false);
-
   const handleAddComment = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-      const comment = {
+    const comment = {
+      feedIndex: feed.index,
       userId: user._id,
       userName: user.first_name,
       userAvatar: user.avatar,
@@ -70,7 +69,7 @@ export const SocialFeed = ({ feed }) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-
+console.log(feed.index)
   return (
     <Card>
       <CardHeader
@@ -137,8 +136,8 @@ export const SocialFeed = ({ feed }) => {
         <Divider />
         <CardContent>
           {feed.comments
-            ? feed.comments.map((comment) => (
-                <ListItem key={comment.dateOfComment + comment.userId}>
+            ? feed.comments.map((comment,index) => (
+                <ListItem key={index}>
                   <ListItemText
                     primary={comment.message}
                     //    primary={`${user.first_name} ${user.last_name}`}

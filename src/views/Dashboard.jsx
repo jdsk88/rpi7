@@ -6,7 +6,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
 import { useSelector } from "react-redux";
 import { userData } from "../reducers/user";
-import { feedsData } from "../reducers/feeds";
+import feeds, { feedsData } from "../reducers/feeds";
 import moment from "moment";
 import { DataContext } from "../context/DataContext";
 import { useSnackbar } from "notistack";
@@ -15,18 +15,11 @@ import { add } from "../reducers/feeds";
 
 export const DashBoard = () => {
   const { location } = useContext(DataContext);
-  console.log(location);
   const uData = useSelector(userData);
   const fData = useSelector(feedsData.get);
-
   const [user, setUser] = useState(uData);
-  const [reload, setReload] = useState(false);
-
-  // const [feeds] = useState([]);
-  const dispatch = useDispatch();
-
   const [files, setFiles] = useState([]);
-  console.log(files);
+  const dispatch = useDispatch();
   const onFilesChange = async (files) => {
     setFiles(files);
   };
@@ -34,10 +27,12 @@ export const DashBoard = () => {
   const Snackbar = (msg, variant, v) => {
     enqueueSnackbar(msg, { variant });
   };
+
   const handleAddFeed = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const feed = {
+      index: fData.length < 0 ? fData.lenghth : fData.length,
       location: location.formattedAddress,
       userId: user._id,
       avatar: user.avatar,
@@ -47,7 +42,6 @@ export const DashBoard = () => {
       comments: [],
       images: files,
     };
-    console.log(feed.images);
     dispatch(add(feed));
   };
 
@@ -55,11 +49,16 @@ export const DashBoard = () => {
     setUser(uData);
   }, [uData]);
 
+  function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min * max;
+  }
   return (
     <>
       <div style={{ marginBottom: 50 }}>
-        {fData.map((feed) => (
-          <SocialFeed key={Math.random(11111, 22222)} feed={feed} />
+        {fData.map((feed, index) => (
+          <SocialFeed key={index} feed={feed} />
         ))}
       </div>
       <Box
