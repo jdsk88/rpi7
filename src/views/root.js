@@ -19,7 +19,7 @@ export const Root = () => {
   const display = DisplayCheck.WH;
   useEffect(() => {
     dispatch(fetchUserById(userId.get()));
-  }, []);
+  }, [dispatch]);
   return (
     <>
       {!isLogged ? (

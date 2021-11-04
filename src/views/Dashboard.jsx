@@ -1,5 +1,5 @@
-import { Button, Icon, IconButton, Input, TextField } from "@material-ui/core";
-import { CameraAltOutlined, Send } from "@material-ui/icons";
+import { IconButton, TextField } from "@material-ui/core";
+import { Send } from "@material-ui/icons";
 import { Box } from "@mui/system";
 import { SocialFeed } from "../components/atoms/DashFeed/SocialFeed";
 import React, { useEffect, useState } from "react";
@@ -15,7 +15,7 @@ export const DashBoard = () => {
   useEffect(() => {
     setUser(uData);
   }, [uData]);
-  const [feeds, setFeeds] = useState([]);
+  const [feeds] = useState([]);
 
   const [file, setFile] = useState([]);
   // console.log(file.preview.url)
@@ -24,15 +24,33 @@ export const DashBoard = () => {
     setFile(files[0]);
   };
 
-  const onFilesError = (error, file) => {
-    console.log("error code " + error.code + ": " + error.message);
+  // const onFilesError = (error, file) => {
+  //   console.log("error code " + error.code + ": " + error.message);
+  // };
+
+  const [location, setLocation] = useState([]);
+  // const [reload, setReload] = useState(false);
+  const Geolocation = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      let latitude = position.coords.latitude;
+      let longitude = position.coords.longitude;
+      // let accuracy = position.coords.accuracy;
+      // let altitude = position.coords.altitude;
+      // let altitudeAccuracy = position.coords.altitudeAccuracy;
+      // let heading = position.coords.heading;
+      // let speed = position.coords.speed;
+      setLocation({ latitude, longitude });
+      // setReload(!reload);
+    });
   };
+  Geolocation();
+  console.log(location);
 
   const handleAddFeed = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const feed = {
-      location: "EuroSpar Kraków",
+      location: location,
       userId: user._id,
       avatar: user.avatar,
       title: user.first_name + " " + user.last_name,

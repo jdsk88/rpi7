@@ -1,20 +1,15 @@
 import React, { useState } from "react";
 import {
-  Avatar,
   Button,
-  Card,
-  CardHeader,
   CardMedia,
   CardContent,
   CardActions,
   Typography,
-  IconButton,
   TextField,
 } from "@material-ui/core";
-import { Send, MoreVert } from "@material-ui/icons";
+import { Send } from "@material-ui/icons";
 import { useStyles } from "../../../../assets/styles/card";
 import {
-  Container,
   createTheme,
   CssBaseline,
   ThemeProvider,

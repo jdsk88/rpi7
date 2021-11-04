@@ -4,8 +4,8 @@
 .file::before {
   width: 40px;
   height: 40px;
-  content: "📷";
-  font-size: 30px;
+  content: '📷';
+   font-size: 30px;
   display: inline-block;
   border: 0px solid #999;
   outline: none;
@@ -15,7 +15,10 @@
 }
 .file:hover::before {
   border-color: black;
+  content: '📸';
+
 }
 .file:active::before {
+  content: '📸';
   background: -webkit-linear-gradient(top, #e3e3e3, #f9f9f9);
 }
