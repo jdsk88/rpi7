@@ -6,19 +6,19 @@ import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
 import { useSelector } from "react-redux";
 import { userData } from "../reducers/user";
-import { addFiles, feedsData } from "../reducers/feeds";
+import { feedsData } from "../reducers/feeds";
 import moment from "moment";
 import { DataContext } from "../context/DataContext";
 // import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
 import { add } from "../reducers/feeds";
-import { PhotoCameraFrontOutlined } from "@mui/icons-material";
 
 export const DashBoard = () => {
   const { location } = useContext(DataContext);
   const uData = useSelector(userData);
   const fData = useSelector(feedsData.get);
   const [user, setUser] = useState(uData);
+  const [content, setContent] = useState("");
   const [files, setFiles] = useState({
     selectedFile: null,
   });
@@ -39,7 +39,7 @@ export const DashBoard = () => {
   const handleAddFeed = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-   
+
     const feed = {
       index: fData.length < 0 ? fData.lenghth : fData.length,
       location: location.formattedAddress,
@@ -47,55 +47,34 @@ export const DashBoard = () => {
       avatar: user.avatar,
       title: user.first_name + " " + user.last_name,
       subTitle: moment().format("lll"),
-      content: data.get("feed_msg"),
+      content: content,
       comments: [],
       images: files,
     };
-    // feed.images.push(files);
-    console.log(feed.images);
+
     dispatch(add(feed));
     setFiles({
       selectedFile: null,
-    })
-    // dispatch(addFiles(files));
+    });
+    setContent("");
   };
 
   useEffect(() => {
     setUser(uData);
   }, [uData]);
 
-  // function getRandomIntInclusive(min, max) {
-  //   min = Math.ceil(min);
-  //   max = Math.floor(max);
-  //   return Math.floor(Math.random() * (max - min + 1)) + min * max;
-  // }
   return (
     <>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column-reverse",
-          marginBottom: 60,
-        }}
-      >
-        {fData.map((feed, index) => (
-          <SocialFeed key={index} feed={feed} />
-        ))}
-      </div>
       <Box
         style={{ padding: 5 }}
         sx={{
-          position: "fixed",
-          // padding: 1,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          width: "100vw",
+          boxSizing: "border-box",
+          width: "100%",
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-around",
           alignItems: "center",
-          background: "whitesmoke",
+          background: "white",
           zIndex: 1,
         }}
         component="form"
@@ -103,19 +82,27 @@ export const DashBoard = () => {
         onSubmit={handleAddFeed}
       >
         <TextField
+          inputProps={{
+            maxLength: 1024,
+          }}
           required
-          label="Whats up ... ?"
+          // label="Whats up ... ?"
           name="feed_msg"
           id="feed_msg"
           style={{ width: "70%" }}
           variant="outlined"
+          multiline
+          maxRows={10}
           size="small"
+          value={content}
+          onChange={(e) => {
+            setContent(e.currentTarget.value);
+          }}
         />
 
         <input
-          name="file"
           type="file"
-          accept={".jpg, .jpeg, .mp4, .png"}
+          accept={".gif, .jpg, .jpeg, .mp4, .png, .svg"}
           multiple
           onChange={(e) => {
             onFilesChange(e.currentTarget.files);
@@ -132,22 +119,21 @@ export const DashBoard = () => {
             <CameraAltOutlined />
           </IconButton>
         </label>
-
-        {/* <input
-          style={{ width: "12.5%" }}
-          type="file"
-          className={"file"}
-          accept={".jpg, .jpeg, .mp4, .png"}
-          multiple
-          onChange={(e) => {
-            onFilesChange(e.currentTarget.files);
-          }}
-        /> */}
-
-        <IconButton style={{ width: "10%" }} type="submit">
+        <IconButton color="primary" style={{ width: "10%" }} type="submit">
           <Send />
         </IconButton>
       </Box>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column-reverse",
+          marginBottom: 60,
+        }}
+      >
+        {fData.map((feed, index) => (
+          <SocialFeed key={index} feed={feed} />
+        ))}
+      </div>
     </>
   );
 };

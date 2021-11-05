@@ -47,13 +47,11 @@ const ExpandMore = styled((props) => {
 }));
 
 export const SocialFeed = ({ feed }) => {
-  const noimage =
-    "https://kwiaciarniaegzotyka.pl/wp-content/uploads/2018/10/kisspng-video-on-demand-retail-website-simple-no-png-5ab1349e1338a3.1123358815215627820787.png";
   const CHARACTER_LIMIT = 255;
+  const [commentMsg, setCommentMsg] = useState("");
   const [values, setValues] = React.useState({
     name: "",
   });
-
   const [files, setFiles] = useState({
     selectedFile: null,
   });
@@ -85,7 +83,7 @@ export const SocialFeed = ({ feed }) => {
       userId: user._id,
       userName: user.first_name,
       userAvatar: user.avatar,
-      message: data.get("comment_msg"),
+      message: commentMsg,
       dateOfComment: moment().format("lll"),
       image: files,
     };
@@ -93,6 +91,7 @@ export const SocialFeed = ({ feed }) => {
     setFiles({
       selectedFile: null,
     });
+    setCommentMsg("");
   };
 
   const handleExpandClick = () => {
@@ -120,7 +119,6 @@ export const SocialFeed = ({ feed }) => {
       {feed.images.selectedFile !== null ? (
         <CardMedia
           component="img"
-          height="194"
           style={{ objectFit: "cover" }}
           image={feed.images.selectedFile}
           alt={feed.subTitle}
@@ -129,7 +127,11 @@ export const SocialFeed = ({ feed }) => {
         <></>
       )}
       <CardContent>
-        <Typography variant="body2" color="text.secondary">
+        <Typography
+          variant="body2"
+          color="text.secondary"
+          style={{ overflowWrap: "anywhere" }}
+        >
           {feed.content}
         </Typography>
       </CardContent>
@@ -197,24 +199,25 @@ export const SocialFeed = ({ feed }) => {
               autoFocus
               name="comment_msg"
               id="comment_msg"
-              // style={{ width: "60%" }}
               variant="outlined"
               size="small"
               onChange={handleChange("name")}
-              //   id={}
+              onChange={(e) => {
+                setCommentMsg(e.currentTarget.value);
+              }}
+              value={commentMsg}
             />
             <input
-              name="file"
               type="file"
-              accept={".jpg, .jpeg, .mp4, .png"}
+              accept={".gif, .jpg, .jpeg, .mp4, .png, .svg"}
               multiple
               onChange={(e) => {
                 onFilesChange(e.currentTarget.files);
               }}
-              id="icon-button-file"
+              id="icon-button-file2"
               style={{ display: "none" }}
             />
-            <label htmlFor="icon-button-file">
+            <label htmlFor="icon-button-file2">
               <IconButton
                 // color="primary"
                 aria-label="upload picture"
@@ -277,56 +280,50 @@ export const SocialFeed = ({ feed }) => {
           <Collapse in={commentsExpanded} timeout="auto" unmountOnExit>
             <div style={{ display: "flex", flexDirection: "column-reverse" }}>
               {feed.comments
-                ? feed.comments.map(
-                    (comment, index) => (
-                      console.log(comment.image),
-                      (
-                        <ListItem key={index}>
-                          <div
+                ? feed.comments.map((comment, index) => (
+                    // console.log(comment.image),
+                    <ListItem key={index}>
+                      <div
+                        style={{
+                          display: "flex",
+                          flexDirection: "column",
+                          width: "90%",
+                          background: "rgb(180,222,233,.2)",
+                          borderRadius: 25,
+                        }}
+                      >
+                        {comment.image.selectedFile !== null ? (
+                          <CardMedia
+                            component="img"
                             style={{
-                              display: "flex",
-                              flexDirection: "column",
-                              width: "90%",
-                              background: "rgb(180,222,233,.2)",
-                              borderRadius: 25,
+                              borderRadius: "25px 25px 0px 0px",
+                              objectFit: "scale-down",
                             }}
-                          >
-                            {comment.image.selectedFile !== null ? (
-                              <CardMedia
-                                component="img"
-                                style={{
-                                  borderRadius: "25px 25px 0px 0px",
-                                  objectFit: "scale-down",
-                                }}
-                                image={comment.image.selectedFile}
-                                alt={feed.subTitle}
-                              />
-                            ) : (
-                              <></>
-                            )}
+                            image={comment.image.selectedFile}
+                            alt={feed.subTitle}
+                          />
+                        ) : (
+                          <></>
+                        )}
 
-                            <ListItemText
-                              style={{
-                                width: "100%",
-                                overflowWrap: "anywhere",
-                                padding: 15,
-                                borderRadius: 25,
-                                overflowY: "scroll",
-                              }}
-                              primary={comment.message}
-                              secondary={`${comment.userName} at ${comment.dateOfComment}`}
-                            />
-                          </div>
+                        <ListItemText
+                          style={{
+                            width: "100%",
+                            overflowWrap: "anywhere",
+                            padding: 15,
+                            borderRadius: 25,
+                            overflowY: "scroll",
+                          }}
+                          primary={comment.message}
+                          secondary={`${comment.userName} at ${comment.dateOfComment}`}
+                        />
+                      </div>
 
-                          <ListItemAvatar
-                            style={{ width: "10%", paddingLeft: 20 }}
-                          >
-                            <Avatar src={comment.userAvatar} alt="avatar" />
-                          </ListItemAvatar>
-                        </ListItem>
-                      )
-                    )
-                  )
+                      <ListItemAvatar style={{ width: "10%", paddingLeft: 20 }}>
+                        <Avatar src={comment.userAvatar} alt="avatar" />
+                      </ListItemAvatar>
+                    </ListItem>
+                  ))
                 : ""}
             </div>
           </Collapse>
