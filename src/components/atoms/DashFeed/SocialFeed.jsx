@@ -20,6 +20,7 @@ import {
   MessageOutlined,
   PinDropOutlined,
   Send,
+  ThumbDownAltOutlined,
   ThumbUpAlt,
   ThumbUpAltOutlined,
 } from "@material-ui/icons";
@@ -159,7 +160,7 @@ export const SocialFeed = ({ feed }) => {
           aria-label="share"
           onClick={handleLike}
         >
-          {like ? <ThumbUpAlt color={"primary"} /> : <ThumbUpAltOutlined />}
+          {like ? <ThumbUpAlt color={"primary"} /> : <ThumbDownAltOutlined />}
         </IconButton>
         <ExpandMore
           style={{ width: "15%" }}
