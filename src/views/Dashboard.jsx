@@ -18,6 +18,7 @@ export const DashBoard = () => {
   const uData = useSelector(userData);
   const fData = useSelector(feedsData.get);
   const [user, setUser] = useState(uData);
+  
   const [content, setContent] = useState("");
   const [files, setFiles] = useState({
     selectedFile: null,
@@ -38,8 +39,6 @@ export const DashBoard = () => {
 
   const handleAddFeed = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
     const feed = {
       index: fData.length < 0 ? fData.lenghth : fData.length,
       location: location.formattedAddress,
@@ -49,11 +48,13 @@ export const DashBoard = () => {
       subTitle: moment().format("lll"),
       content: content,
       comments: [],
+      likes: [],
       images: files,
     };
 if(content < 3){
-  Snackbar("Please type feed message","warning")
+  Snackbar("Please type feed message or image","warning")
 }else{
+    
     dispatch(add(feed));
     setFiles({
       selectedFile: null,
@@ -129,7 +130,7 @@ if(content < 3){
         style={{
           display: "flex",
           flexDirection: "column-reverse",
-          marginBottom: 60,
+          // marginBottom: 60,
         }}
       >
         {fData.map((feed, index) => (

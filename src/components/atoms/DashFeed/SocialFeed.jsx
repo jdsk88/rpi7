@@ -23,7 +23,6 @@ import {
   Send,
   ThumbDownAltOutlined,
   ThumbUpAlt,
-  ThumbUpAltOutlined,
 } from "@material-ui/icons";
 import {
   Badge,
@@ -51,11 +50,19 @@ const ExpandMore = styled((props) => {
 }));
 
 export const SocialFeed = ({ feed }) => {
+  const uData = useSelector(userData);
+  const [user, setUser] = useState(uData);
   const CHARACTER_LIMIT = 255;
-  const [commentMsg, setCommentMsg] = useState("");
+  const [likes] = useState({ userId: user._id, like: false });
   const [like, setLike] = useState(false);
   const handleLike = () => {
+    if (!like === true) {
+      likes.like = true;
+    } else {
+      likes.like = false;
+    }
     setLike(!like);
+    console.log(likes);
   };
   const [values, setValues] = React.useState({
     name: "",
@@ -78,8 +85,6 @@ export const SocialFeed = ({ feed }) => {
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
-  const uData = useSelector(userData);
-  const [user, setUser] = useState(uData);
   useEffect(() => {
     setUser(uData);
   }, [uData]);
@@ -93,18 +98,18 @@ export const SocialFeed = ({ feed }) => {
       userId: user._id,
       userName: user.first_name,
       userAvatar: user.avatar,
-      message: commentMsg,
+      message: values.name,
       dateOfComment: moment().format("lll"),
       image: files,
     };
-    if (commentMsg <= 3) {
+    if (values <= 3) {
       Snackbar("Please type comment message", "warning");
     } else {
       dispatch(addComment(comment));
       setFiles({
         selectedFile: null,
       });
-      setCommentMsg("");
+      setValues({ name: "" });
     }
   };
 
@@ -114,6 +119,7 @@ export const SocialFeed = ({ feed }) => {
   const handleExpandComments = () => {
     setCommentsExpanded(!commentsExpanded);
   };
+
   const lastComment = feed.comments.at(-1);
   return (
     <Card style={{ marginBottom: 5 }}>
@@ -220,10 +226,7 @@ export const SocialFeed = ({ feed }) => {
               variant="outlined"
               size="small"
               onChange={handleChange("name")}
-              onChange={(e) => {
-                setCommentMsg(e.currentTarget.value);
-              }}
-              value={commentMsg}
+              value={values.name}
             />
             <input
               type="file"
