@@ -9,7 +9,11 @@ const reducers = {
     state[action.payload.feedIndex].comments.push(action.payload);
   },
   addFFiles: (state, action) => {
-    state[action.payload.feedIndex].images.push(action.payload);
+    state[action.payload.feedIndex].images.forEach(element => {
+      for (var p  of element.entries()){
+        console.log(p[0],p[1])
+      }
+    });
   },
 };
 

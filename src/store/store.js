@@ -5,6 +5,10 @@ import feedsReducer from "../reducers/feeds";
 export const store = configureStore({
   reducer: {
     user: userReducer,
-    feeds:feedsReducer,
+    feeds: feedsReducer,
   },
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });

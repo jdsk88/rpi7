@@ -1,27 +1,35 @@
 import { IconButton, TextField } from "@material-ui/core";
-import { Send } from "@material-ui/icons";
+import { CameraAltOutlined, Send } from "@material-ui/icons";
 import { Box } from "@mui/system";
 import { SocialFeed } from "../components/atoms/DashFeed/SocialFeed";
 import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
 import { useSelector } from "react-redux";
 import { userData } from "../reducers/user";
-import { feedsData } from "../reducers/feeds";
+import { addFiles, feedsData } from "../reducers/feeds";
 import moment from "moment";
 import { DataContext } from "../context/DataContext";
 // import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
 import { add } from "../reducers/feeds";
+import { PhotoCameraFrontOutlined } from "@mui/icons-material";
 
 export const DashBoard = () => {
   const { location } = useContext(DataContext);
   const uData = useSelector(userData);
   const fData = useSelector(feedsData.get);
   const [user, setUser] = useState(uData);
-  const [files, setFiles] = useState([]);
+  const [files, setFiles] = useState({
+    selectedFile: null,
+  });
   const dispatch = useDispatch();
   const onFilesChange = async (files) => {
-    setFiles(files);
+    if (files.length !== 0) {
+      setFiles({
+        selectedFile: window.URL.createObjectURL(files[0]),
+        loaded: 0,
+      });
+    }
   };
   // const { enqueueSnackbar } = useSnackbar();
   // const Snackbar = (msg, variant, v) => {
@@ -31,6 +39,7 @@ export const DashBoard = () => {
   const handleAddFeed = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+   
     const feed = {
       index: fData.length < 0 ? fData.lenghth : fData.length,
       location: location.formattedAddress,
@@ -42,8 +51,13 @@ export const DashBoard = () => {
       comments: [],
       images: files,
     };
-    console.log(files);
+    // feed.images.push(files);
+    console.log(feed.images);
     dispatch(add(feed));
+    setFiles({
+      selectedFile: null,
+    })
+    // dispatch(addFiles(files));
   };
 
   useEffect(() => {
@@ -57,7 +71,13 @@ export const DashBoard = () => {
   // }
   return (
     <>
-      <div style={{ marginBottom: 60 }}>
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "column-reverse",
+          marginBottom: 60,
+        }}
+      >
         {fData.map((feed, index) => (
           <SocialFeed key={index} feed={feed} />
         ))}
@@ -91,7 +111,29 @@ export const DashBoard = () => {
           variant="outlined"
           size="small"
         />
+
         <input
+          name="file"
+          type="file"
+          accept={".jpg, .jpeg, .mp4, .png"}
+          multiple
+          onChange={(e) => {
+            onFilesChange(e.currentTarget.files);
+          }}
+          id="icon-button-file"
+          style={{ display: "none" }}
+        />
+        <label htmlFor="icon-button-file">
+          <IconButton
+            // color="primary"
+            aria-label="upload picture"
+            component="span"
+          >
+            <CameraAltOutlined />
+          </IconButton>
+        </label>
+
+        {/* <input
           style={{ width: "12.5%" }}
           type="file"
           className={"file"}
@@ -100,7 +142,7 @@ export const DashBoard = () => {
           onChange={(e) => {
             onFilesChange(e.currentTarget.files);
           }}
-        />
+        /> */}
 
         <IconButton style={{ width: "10%" }} type="submit">
           <Send />
