@@ -271,7 +271,7 @@ export const SocialFeed = ({ feed }) => {
             </ListItemAvatar>
             <ListItemText
               style={{ overflowWrap: "anywhere" }}
-              primary={lastComment ? lastComment.message : " No Comments yet"}
+              primary={lastComment ? `${lastComment.message.substring(0, 20)}...` : " No Comments yet"}
               secondary={
                 lastComment
                   ? `${lastComment.userName} at ${lastComment.dateOfComment}`
