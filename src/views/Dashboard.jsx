@@ -9,7 +9,7 @@ import { userData } from "../reducers/user";
 import { feedsData } from "../reducers/feeds";
 import moment from "moment";
 import { DataContext } from "../context/DataContext";
-// import { useSnackbar } from "notistack";
+import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
 import { add } from "../reducers/feeds";
 
@@ -31,10 +31,10 @@ export const DashBoard = () => {
       });
     }
   };
-  // const { enqueueSnackbar } = useSnackbar();
-  // const Snackbar = (msg, variant, v) => {
-  //   enqueueSnackbar(msg, { variant });
-  // };
+  const { enqueueSnackbar } = useSnackbar();
+  const Snackbar = (msg, variant, v) => {
+    enqueueSnackbar(msg, { variant });
+  };
 
   const handleAddFeed = (event) => {
     event.preventDefault();
@@ -51,12 +51,14 @@ export const DashBoard = () => {
       comments: [],
       images: files,
     };
-
+if(content < 3){
+  Snackbar("Please type feed message","warning")
+}else{
     dispatch(add(feed));
     setFiles({
       selectedFile: null,
     });
-    setContent("");
+    setContent("");}
   };
 
   useEffect(() => {

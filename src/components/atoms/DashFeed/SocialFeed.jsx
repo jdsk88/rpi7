@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSnackbar } from "notistack";
 import { userData } from "../../../reducers/user";
 import { useSelector } from "react-redux";
 
@@ -37,6 +38,7 @@ import moment from "moment";
 import { Box } from "@mui/system";
 import { useDispatch } from "react-redux";
 import { addComment } from "../../../reducers/feeds";
+
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
   return <IconButton {...other} />;
@@ -61,7 +63,10 @@ export const SocialFeed = ({ feed }) => {
   const [files, setFiles] = useState({
     selectedFile: null,
   });
-
+  const { enqueueSnackbar } = useSnackbar();
+  const Snackbar = (msg, variant, v) => {
+    enqueueSnackbar(msg, { variant });
+  };
   const onFilesChange = async (files) => {
     if (files.length !== 0) {
       setFiles({
@@ -83,8 +88,6 @@ export const SocialFeed = ({ feed }) => {
   const [commentsExpanded, setCommentsExpanded] = useState(false);
   const handleAddComment = (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
     const comment = {
       feedIndex: feed.index,
       userId: user._id,
@@ -94,11 +97,15 @@ export const SocialFeed = ({ feed }) => {
       dateOfComment: moment().format("lll"),
       image: files,
     };
-    dispatch(addComment(comment));
-    setFiles({
-      selectedFile: null,
-    });
-    setCommentMsg("");
+    if (commentMsg <= 3) {
+      Snackbar("Please type comment message", "warning");
+    } else {
+      dispatch(addComment(comment));
+      setFiles({
+        selectedFile: null,
+      });
+      setCommentMsg("");
+    }
   };
 
   const handleExpandClick = () => {
