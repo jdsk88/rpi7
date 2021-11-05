@@ -47,6 +47,8 @@ const ExpandMore = styled((props) => {
 }));
 
 export const SocialFeed = ({ feed }) => {
+  const noimage =
+    "https://kwiaciarniaegzotyka.pl/wp-content/uploads/2018/10/kisspng-video-on-demand-retail-website-simple-no-png-5ab1349e1338a3.1123358815215627820787.png";
   const CHARACTER_LIMIT = 255;
   const [values, setValues] = React.useState({
     name: "",
@@ -115,13 +117,17 @@ export const SocialFeed = ({ feed }) => {
         title={feed.title}
         subheader={feed.subTitle}
       />
-      <CardMedia
-        component="img"
-        height="194"
-        style={{ objectFit: "cover" }}
-        image={feed.images.selectedFile}
-        alt={feed.subTitle}
-      />
+      {feed.images.selectedFile !== null ? (
+        <CardMedia
+          component="img"
+          height="194"
+          style={{ objectFit: "cover" }}
+          image={feed.images.selectedFile}
+          alt={feed.subTitle}
+        />
+      ) : (
+        <></>
+      )}
       <CardContent>
         <Typography variant="body2" color="text.secondary">
           {feed.content}
@@ -280,20 +286,24 @@ export const SocialFeed = ({ feed }) => {
                             style={{
                               display: "flex",
                               flexDirection: "column",
-                              maxWidth: "90%",
+                              width: "90%",
                               background: "rgb(180,222,233,.2)",
                               borderRadius: 25,
                             }}
                           >
-                            <CardMedia
-                              component="img"
-                              style={{
-                                borderRadius: "25px 25px 0px 0px",
-                                objectFit: "scale-down",
-                              }}
-                              image={comment.image.selectedFile}
-                              alt={feed.subTitle}
-                            />
+                            {comment.image.selectedFile !== null ? (
+                              <CardMedia
+                                component="img"
+                                style={{
+                                  borderRadius: "25px 25px 0px 0px",
+                                  objectFit: "scale-down",
+                                }}
+                                image={comment.image.selectedFile}
+                                alt={feed.subTitle}
+                              />
+                            ) : (
+                              <></>
+                            )}
 
                             <ListItemText
                               style={{
