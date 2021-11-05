@@ -102,7 +102,7 @@ export const SocialFeed = ({ feed }) => {
       dateOfComment: moment().format("lll"),
       image: files,
     };
-    if (values <= 3) {
+    if (values.name <= 3) {
       Snackbar("Please type comment message", "warning");
     } else {
       dispatch(addComment(comment));
