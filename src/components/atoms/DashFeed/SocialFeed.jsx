@@ -20,6 +20,7 @@ import {
   MessageOutlined,
   PinDropOutlined,
   Send,
+  ThumbUpAlt,
   ThumbUpAltOutlined,
 } from "@material-ui/icons";
 import {
@@ -49,12 +50,17 @@ const ExpandMore = styled((props) => {
 export const SocialFeed = ({ feed }) => {
   const CHARACTER_LIMIT = 255;
   const [commentMsg, setCommentMsg] = useState("");
+  const [like, setLike] = useState(false);
+  const handleLike = () => {
+    setLike(!like);
+  };
   const [values, setValues] = React.useState({
     name: "",
   });
   const [files, setFiles] = useState({
     selectedFile: null,
   });
+
   const onFilesChange = async (files) => {
     if (files.length !== 0) {
       setFiles({
@@ -148,8 +154,12 @@ export const SocialFeed = ({ feed }) => {
           <PinDropOutlined />
         </Icon>
         <Typography style={{ width: "55%" }}>{feed.location}</Typography>
-        <IconButton style={{ width: "15%" }} aria-label="share">
-          <ThumbUpAltOutlined />
+        <IconButton
+          style={{ width: "15%" }}
+          aria-label="share"
+          onClick={handleLike}
+        >
+          {like ? <ThumbUpAlt color={"primary"} /> : <ThumbUpAltOutlined />}
         </IconButton>
         <ExpandMore
           style={{ width: "15%" }}
