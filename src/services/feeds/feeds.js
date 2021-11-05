@@ -1,9 +1,6 @@
 import moment from "moment";
-import { useDispatch } from "react-redux";
-import { add } from "../../reducers/feeds";
 
 export const FeedsServices = () => {
-  // const dispatch = useDispatch();
   return {
     add: (e, feeds, setFile, file, user, location) => {
       e.preventDefault();

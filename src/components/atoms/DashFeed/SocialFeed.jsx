@@ -14,6 +14,9 @@ import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { red } from "@mui/material/colors";
 import {
+  ArrowDownward,
+  ArrowUpward,
+  CameraAltOutlined,
   MessageOutlined,
   PinDropOutlined,
   Send,
@@ -21,7 +24,6 @@ import {
 } from "@material-ui/icons";
 import {
   Badge,
-  Button,
   Divider,
   Icon,
   ListItem,
@@ -45,6 +47,14 @@ const ExpandMore = styled((props) => {
 }));
 
 export const SocialFeed = ({ feed }) => {
+  const CHARACTER_LIMIT = 255;
+  const [values, setValues] = React.useState({
+    name: "",
+  });
+
+  const handleChange = (name) => (event) => {
+    setValues({ ...values, [name]: event.target.value });
+  };
   const uData = useSelector(userData);
   const [user, setUser] = useState(uData);
   useEffect(() => {
@@ -52,6 +62,7 @@ export const SocialFeed = ({ feed }) => {
   }, [uData]);
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState(false);
+  const [commentsExpanded, setCommentsExpanded] = useState(false);
   const handleAddComment = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
@@ -69,7 +80,10 @@ export const SocialFeed = ({ feed }) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
-console.log(feed.index)
+  const handleExpandComments = () => {
+    setCommentsExpanded(!commentsExpanded);
+  };
+  console.log(feed.index);
   return (
     <Card>
       <CardHeader
@@ -135,49 +149,80 @@ console.log(feed.index)
       <Collapse in={expanded} timeout="auto" unmountOnExit>
         <Divider />
         <CardContent>
-          {feed.comments
-            ? feed.comments.map((comment,index) => (
-                <ListItem key={index}>
-                  <ListItemText
-                    primary={comment.message}
-                    //    primary={`${user.first_name} ${user.last_name}`}
-                    secondary={`${comment.userName} at ${comment.dateOfComment}`}
-                  />
-                  <ListItemAvatar>
-                    <Avatar src={comment.userAvatar} alt="avatar" />
-                  </ListItemAvatar>
-                </ListItem>
-              ))
-            : ""}
-        </CardContent>
-        <CardContent>
           <Box
             sx={{
               width: "100%",
               display: "flex",
               flexDirection: "row",
-              justifyContent: "space-evenly",
+              justifyContent: "space-around",
+              padding: 0,
+              alignItems: "center",
             }}
             component="form"
             noValidate
             onSubmit={handleAddComment}
           >
+            <Typography>
+              {values.name.length}/{CHARACTER_LIMIT}
+            </Typography>
+            <p></p>
             <TextField
+              inputProps={{
+                maxLength: CHARACTER_LIMIT,
+              }}
+              // helperText={`${values.name.length}/${CHARACTER_LIMIT}`}
               required
-              label="comment message here"
+              multiline
+              maxRows={5}
+              // label="comment message here"
               autoFocus
               name="comment_msg"
               id="comment_msg"
-              style={{ width: "80%" }}
+              // style={{ width: "60%" }}
               variant="outlined"
               size="small"
+              onChange={handleChange("name")}
               //   id={}
             />
-            <IconButton style={{ width: "5%" }}></IconButton>
-            <Button type="submit" style={{ width: "10%" }} aria-label="share">
+            <IconButton
+            // style={{ color: "rgb(0,0,0,1)" }}
+            >
+              <CameraAltOutlined />
+            </IconButton>
+            <input
+              type="file"
+              // ref={(fileUpload) => {
+              //   this.fileUpload = fileUpload;
+              // }}
+              style={{ visibility: "hidden", display: "none" }}
+              // onChange={this.groupImgUpload}
+            />
+            <IconButton type="submit">
               <Send />
-            </Button>
+            </IconButton>
           </Box>
+        </CardContent>
+        <CardContent>
+          <ExpandMore expand={commentsExpanded} onClick={handleExpandComments}>
+            {commentsExpanded ? <ArrowUpward /> : <ArrowDownward />}
+          </ExpandMore>
+          <Collapse in={commentsExpanded} timeout="auto" unmountOnExit>
+            {feed.comments
+              ? feed.comments.map((comment, index) => (
+                  <ListItem key={index}>
+                    <ListItemText
+                      style={{ width: "80%", overflowWrap: "anywhere" }}
+                      primary={comment.message}
+                      secondary={`${comment.userName} at ${comment.dateOfComment}`}
+                    />
+                    <IconButton style={{ width: "5%" }}></IconButton>
+                    <ListItemAvatar style={{ width: "10%", paddingLeft: 20 }}>
+                      <Avatar src={comment.userAvatar} alt="avatar" />
+                    </ListItemAvatar>
+                  </ListItem>
+                ))
+              : ""}
+          </Collapse>
         </CardContent>
       </Collapse>
     </Card>

@@ -6,10 +6,10 @@ import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
 import { useSelector } from "react-redux";
 import { userData } from "../reducers/user";
-import feeds, { feedsData } from "../reducers/feeds";
+import { feedsData } from "../reducers/feeds";
 import moment from "moment";
 import { DataContext } from "../context/DataContext";
-import { useSnackbar } from "notistack";
+// import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
 import { add } from "../reducers/feeds";
 
@@ -23,10 +23,10 @@ export const DashBoard = () => {
   const onFilesChange = async (files) => {
     setFiles(files);
   };
-  const { enqueueSnackbar } = useSnackbar();
-  const Snackbar = (msg, variant, v) => {
-    enqueueSnackbar(msg, { variant });
-  };
+  // const { enqueueSnackbar } = useSnackbar();
+  // const Snackbar = (msg, variant, v) => {
+  //   enqueueSnackbar(msg, { variant });
+  // };
 
   const handleAddFeed = (event) => {
     event.preventDefault();
@@ -42,6 +42,7 @@ export const DashBoard = () => {
       comments: [],
       images: files,
     };
+    console.log(files);
     dispatch(add(feed));
   };
 
@@ -49,20 +50,20 @@ export const DashBoard = () => {
     setUser(uData);
   }, [uData]);
 
-  function getRandomIntInclusive(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min * max;
-  }
+  // function getRandomIntInclusive(min, max) {
+  //   min = Math.ceil(min);
+  //   max = Math.floor(max);
+  //   return Math.floor(Math.random() * (max - min + 1)) + min * max;
+  // }
   return (
     <>
-      <div style={{ marginBottom: 50 }}>
+      <div style={{ marginBottom: 60 }}>
         {fData.map((feed, index) => (
           <SocialFeed key={index} feed={feed} />
         ))}
       </div>
       <Box
-        style={{ padding: 10 }}
+        style={{ padding: 5 }}
         sx={{
           position: "fixed",
           // padding: 1,
@@ -73,6 +74,7 @@ export const DashBoard = () => {
           display: "flex",
           flexDirection: "row",
           justifyContent: "space-around",
+          alignItems: "center",
           background: "whitesmoke",
           zIndex: 1,
         }}
