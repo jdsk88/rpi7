@@ -120,7 +120,7 @@ export const SocialFeed = ({ feed }) => {
     setCommentsExpanded(!commentsExpanded);
   };
 
-  const lastComment = feed.comments.at(-1);
+  // const lastComment = feed.comments.at(-1);
   return (
     <Card style={{ marginBottom: 5 }}>
       <CardHeader
@@ -262,7 +262,7 @@ export const SocialFeed = ({ feed }) => {
             textAlign: "left",
           }}
         >
-          <ListItem key={"index"}>
+          {/* <ListItem key={"index"}>
             <ListItemAvatar>
               <Avatar
                 src={lastComment ? lastComment.userAvatar : ""}
@@ -277,7 +277,7 @@ export const SocialFeed = ({ feed }) => {
                   ? `${lastComment.userName} at ${lastComment.dateOfComment}`
                   : ""
               }
-            />
+            /> */}
             <ExpandMore
               style={{ width: "15%", display: "flex", flexDirection: "column" }}
               expand={commentsExpanded}
@@ -295,7 +295,7 @@ export const SocialFeed = ({ feed }) => {
                 </>
               )}
             </ExpandMore>
-          </ListItem>
+          {/* </ListItem> */}
         </CardContent>
         <CardContent>
           <Collapse in={commentsExpanded} timeout="auto" unmountOnExit>
@@ -326,7 +326,7 @@ export const SocialFeed = ({ feed }) => {
                         ) : (
                           <></>
                         )}
-
+                    
                         <ListItemText
                           style={{
                             width: "100%",
