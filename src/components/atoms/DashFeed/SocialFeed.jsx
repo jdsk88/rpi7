@@ -135,17 +135,11 @@ export const SocialFeed = ({ feed }) => {
         title={feed.title}
         subheader={feed.subTitle}
       />
-      {feed.images.selectedFiles !== undefined ? (
+      {feed.images !== undefined ? (
         <CardMedia
           component="img"
           style={{ objectFit: "cover" }}
-          image={
-            feed.images
-              ? window.URL.createObjectURL(
-                  feed.images.selectedFiles[0]
-                )
-              : ""
-          }
+          image={feed.images ? feed.images[0].url : ""}
           alt={feed.subTitle}
         />
       ) : (

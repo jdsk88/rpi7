@@ -11,7 +11,7 @@ export const FeedsServices = {
     return api.post(`/images/create`, params);
   },
   upload: (files) => {
-      const filesArray = Array.from(files.selectedFiles);
+    const filesArray = Array.from(files.selectedFiles);
     let formData = new FormData();
     for (let i = 0; i < filesArray.length; i++) {
       formData.append("files", filesArray[i]);

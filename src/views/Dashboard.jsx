@@ -42,6 +42,15 @@ export const DashBoard = () => {
 
   const handleAddFeed = (event) => {
     event.preventDefault();
+    let filesUrl = [];
+    for (let file in Array.from(files.selectedFiles)) {
+      filesUrl.push({
+        fileName: Array.from(files.selectedFiles)[file].name,
+        url: `${"https://localhost"}${":8989"}/images/${Array.from(files.selectedFiles)[file].name}`,
+      });
+    }
+    console.log(files);
+    console.log(filesUrl);
     const feed = {
       index: fData.length < 0 ? fData.lenghth : fData.length,
       location: location.formattedAddress,
@@ -52,7 +61,7 @@ export const DashBoard = () => {
       content: content,
       comments: [],
       likes: [],
-      images: files,
+      images: filesUrl,
     };
     if (content < 3) {
       Snackbar("Please type feed message or image", "warning");
@@ -118,11 +127,7 @@ export const DashBoard = () => {
           style={{ display: "none" }}
         />
         <label htmlFor="icon-button-files">
-          <IconButton
-            // color="primary"
-            aria-label="upload picture"
-            component="span"
-          >
+          <IconButton aria-label="upload picture" component="span">
             <CameraAltOutlined />
           </IconButton>
         </label>
@@ -134,7 +139,6 @@ export const DashBoard = () => {
         style={{
           display: "flex",
           flexDirection: "column-reverse",
-          // marginBottom: 60,
         }}
       >
         {fData.map((feed, index) => (
