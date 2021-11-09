@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useSnackbar } from "notistack";
 import { userData } from "../../../reducers/user";
 import { useSelector } from "react-redux";
-
 import { styled } from "@mui/material/styles";
 import Card from "@mui/material/Card";
 import CardHeader from "@mui/material/CardHeader";
@@ -68,7 +67,7 @@ export const SocialFeed = ({ feed }) => {
     name: "",
   });
   const [files, setFiles] = useState({
-    selectedFile: null,
+    selectedCFiles: null,
   });
   const { enqueueSnackbar } = useSnackbar();
   const Snackbar = (msg, variant, v) => {
@@ -77,7 +76,7 @@ export const SocialFeed = ({ feed }) => {
   const onFilesChange = async (files) => {
     if (files.length !== 0) {
       setFiles({
-        selectedFile: window.URL.createObjectURL(files[0]),
+        selectedCFiles: window.URL.createObjectURL(files[0]),
         loaded: 0,
       });
     }
@@ -107,7 +106,7 @@ export const SocialFeed = ({ feed }) => {
     } else {
       dispatch(addComment(comment));
       setFiles({
-        selectedFile: null,
+        selectedCFiles: null,
       });
       setValues({ name: "" });
     }
@@ -136,11 +135,17 @@ export const SocialFeed = ({ feed }) => {
         title={feed.title}
         subheader={feed.subTitle}
       />
-      {feed.images.selectedFile !== null ? (
+      {feed.images.selectedFiles !== undefined ? (
         <CardMedia
           component="img"
           style={{ objectFit: "cover" }}
-          image={feed.images.selectedFile}
+          image={
+            feed.images
+              ? window.URL.createObjectURL(
+                  feed.images.selectedFiles[0]
+                )
+              : ""
+          }
           alt={feed.subTitle}
         />
       ) : (
@@ -278,23 +283,23 @@ export const SocialFeed = ({ feed }) => {
                   : ""
               }
             /> */}
-            <ExpandMore
-              style={{ width: "15%", display: "flex", flexDirection: "column" }}
-              expand={commentsExpanded}
-              onClick={handleExpandComments}
-            >
-              {commentsExpanded ? (
-                <>
-                  <ArrowUpward />
-                  <Typography>less</Typography>
-                </>
-              ) : (
-                <>
-                  <ArrowDownward />
-                  <Typography>more</Typography>
-                </>
-              )}
-            </ExpandMore>
+          <ExpandMore
+            style={{ width: "15%", display: "flex", flexDirection: "column" }}
+            expand={commentsExpanded}
+            onClick={handleExpandComments}
+          >
+            {commentsExpanded ? (
+              <>
+                <ArrowUpward />
+                <Typography>less</Typography>
+              </>
+            ) : (
+              <>
+                <ArrowDownward />
+                <Typography>more</Typography>
+              </>
+            )}
+          </ExpandMore>
           {/* </ListItem> */}
         </CardContent>
         <CardContent>
@@ -313,20 +318,20 @@ export const SocialFeed = ({ feed }) => {
                           borderRadius: 25,
                         }}
                       >
-                        {comment.image.selectedFile !== null ? (
+                        {comment.image.selectedFiles !== null ? (
                           <CardMedia
                             component="img"
                             style={{
                               borderRadius: "25px 25px 0px 0px",
                               objectFit: "scale-down",
                             }}
-                            image={comment.image.selectedFile}
+                            image={comment.image.selectedFiles}
                             alt={feed.subTitle}
                           />
                         ) : (
                           <></>
                         )}
-                    
+
                         <ListItemText
                           style={{
                             width: "100%",

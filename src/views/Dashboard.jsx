@@ -12,26 +12,29 @@ import { DataContext } from "../context/DataContext";
 import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
 import { add } from "../reducers/feeds";
+import { FeedsServices } from "../services/api/feed/feed";
 
 export const DashBoard = () => {
   const { location } = useContext(DataContext);
   const uData = useSelector(userData);
   const fData = useSelector(feedsData.get);
   const [user, setUser] = useState(uData);
-  
+
   const [content, setContent] = useState("");
   const [files, setFiles] = useState({
-    selectedFile: null,
+    selectedFiles: undefined,
   });
+
   const dispatch = useDispatch();
+
   const onFilesChange = async (files) => {
     if (files.length !== 0) {
       setFiles({
-        selectedFile: window.URL.createObjectURL(files[0]),
-        loaded: 0,
+        selectedFiles: files,
       });
     }
   };
+
   const { enqueueSnackbar } = useSnackbar();
   const Snackbar = (msg, variant, v) => {
     enqueueSnackbar(msg, { variant });
@@ -51,15 +54,16 @@ export const DashBoard = () => {
       likes: [],
       images: files,
     };
-if(content < 3){
-  Snackbar("Please type feed message or image","warning")
-}else{
-    
-    dispatch(add(feed));
-    setFiles({
-      selectedFile: null,
-    });
-    setContent("");}
+    if (content < 3) {
+      Snackbar("Please type feed message or image", "warning");
+    } else {
+      dispatch(add(feed));
+      FeedsServices.upload(files);
+      setFiles({
+        selectedFiles: null,
+      });
+      setContent("");
+    }
   };
 
   useEffect(() => {
@@ -110,10 +114,10 @@ if(content < 3){
           onChange={(e) => {
             onFilesChange(e.currentTarget.files);
           }}
-          id="icon-button-file"
+          id="icon-button-files"
           style={{ display: "none" }}
         />
-        <label htmlFor="icon-button-file">
+        <label htmlFor="icon-button-files">
           <IconButton
             // color="primary"
             aria-label="upload picture"
