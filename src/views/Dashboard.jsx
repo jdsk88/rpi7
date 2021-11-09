@@ -39,18 +39,27 @@ export const DashBoard = () => {
   const Snackbar = (msg, variant, v) => {
     enqueueSnackbar(msg, { variant });
   };
-
+  function getRandomIntInclusive(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
   const handleAddFeed = (event) => {
     event.preventDefault();
+    const feedId = getRandomIntInclusive(
+      1000000000000000000000,
+      999999999999999999999
+    );
     let filesUrl = [];
     for (let file in Array.from(files.selectedFiles)) {
       filesUrl.push({
-        fileName: Array.from(files.selectedFiles)[file].name,
-        url: `${"https://localhost"}${":8989"}/images/${Array.from(files.selectedFiles)[file].name}`,
+        fileName: feedId + "_" + Array.from(files.selectedFiles)[file].name,
+        url: `${"https://localhost:8989"}/images/${
+          Array.from(files.selectedFiles)[file].name
+        }`,
+        tags: [],
       });
     }
-    console.log(files);
-    console.log(filesUrl);
     const feed = {
       index: fData.length < 0 ? fData.lenghth : fData.length,
       location: location.formattedAddress,
@@ -62,11 +71,13 @@ export const DashBoard = () => {
       comments: [],
       likes: [],
       images: filesUrl,
+      feedId: feedId,
     };
     if (content < 3) {
       Snackbar("Please type feed message or image", "warning");
     } else {
       dispatch(add(feed));
+      FeedsServices.createFeed(feed);
       FeedsServices.upload(files);
       setFiles({
         selectedFiles: null,
