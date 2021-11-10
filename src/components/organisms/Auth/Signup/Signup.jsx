@@ -14,6 +14,8 @@ import { Link, useHistory } from "react-router-dom";
 import { Copyright } from "../../../atoms/copyright/copyright";
 import { UserServices } from "../../../../services/users/users";
 import { routes } from "../../../../routes";
+import { CountrySelect } from "../../../atoms/countryInput/CountryInput";
+import moment from "moment";
 const theme = createTheme();
 
 export const SignUp = () => {
@@ -30,8 +32,26 @@ export const SignUp = () => {
       last_name: data.get("last_name"),
       email: data.get("email"),
       password: data.get("password"),
-      
+      companyData: [
+        {
+          name: data.get("name"),
+          vat: data.get("vat"),
+          address: {
+            street: `${data.get("Street")} ${data.get(
+              "BuildingNumber"
+            )} ${data.get("LocaleNumber")}}`,
+            zipCode: data.get("ZipCode"),
+            city: data.get("City"),
+          },
+        },
+      ],
+      tasks: [],
+      avatar: data.get("first_name"),
+      phone: data.get("Phone"),
+      role: "CEO",
+      dateOfRegistration: moment().format("MMMM Do YYYY, h:mm:ss a"),
     };
+    console.log(user);
     UserServices.register(user)
       .then(() => {
         Snackbar("Registration complete!", "success");
@@ -94,6 +114,28 @@ export const SignUp = () => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  required
+                  fullWidth
+                  name="password"
+                  label="Password"
+                  type="password"
+                  id="password"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="password_confirm"
+                  label="Confirm password "
+                  type="password"
+                  id="password_confirm"
+                  autoComplete="new-password"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
                   type="email"
                   required
                   fullWidth
@@ -105,13 +147,91 @@ export const SignUp = () => {
               </Grid>
               <Grid item xs={12}>
                 <TextField
+                  type="number"
                   required
                   fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
+                  id="Phone"
+                  label="Phone number"
+                  name="Phone"
+                  autoComplete="phone"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <CountrySelect />
+                {/* <TextField
+                  required
+                  name="Country"
+                  label="Country"
+                  type="text"
+                  id="Country"
+                
+                /> */}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="name"
+                  label="Company Name"
+                  type="text"
+                  id="name"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  required
+                  fullWidth
+                  name="vat"
+                  label="VAT number "
+                  type="number"
+                  id="vat"
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  // fullWidth
+                  name="Street"
+                  label="Street"
+                  type="text"
+                  id="Street"
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextField
+                  required
+                  name="BuildingNumber"
+                  label="Number"
+                  type="number"
+                  id="BuildingNumber"
+                />
+              </Grid>
+              <Grid item xs={3}>
+                <TextField
+                  name="LocaleNumber"
+                  label="/"
+                  type="number"
+                  id="LocaleNumber"
+                />
+              </Grid>
+
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  name="City"
+                  label="City"
+                  type="text"
+                  id="City"
+                />
+              </Grid>
+              <Grid item xs={6}>
+                <TextField
+                  required
+                  name="ZipCode"
+                  label="Zip Code"
+                  type="number"
+                  id="ZipCode"
                 />
               </Grid>
             </Grid>

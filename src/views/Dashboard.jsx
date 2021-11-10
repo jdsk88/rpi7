@@ -6,11 +6,7 @@ import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
 import { useSelector } from "react-redux";
 import { userData } from "../reducers/user";
-import {
-  addFeed,
-  addFeedFiles,
-  feedsData,
-} from "../reducers/feeds";
+import { addFeed, addFeedFiles, feedsData } from "../reducers/feeds";
 import moment from "moment";
 import { DataContext } from "../context/DataContext";
 import { useSnackbar } from "notistack";
@@ -40,23 +36,21 @@ export const DashBoard = () => {
   const Snackbar = (msg, variant, v) => {
     enqueueSnackbar(msg, { variant });
   };
-  function getRandomIntInclusive(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  }
+
   const handleAddFeed = (event) => {
     event.preventDefault();
     const feedId = getRandomIntInclusive(1000000000, 9999999999);
     let filesUrl = [];
-    for (let file in Array.from(files.selectedFiles)) {
-      filesUrl.push({
-        fileName: feedId + "_" + Array.from(files.selectedFiles)[file].name,
-        url: `${"https://localhost:8989"}/images/${
-          Array.from(files.selectedFiles)[file].name
-        }`,
-        tags: [],
-      });
+    if (files.selectedFiles != undefined) {
+      for (let file in Array.from(files.selectedFiles)) {
+        filesUrl.push({
+          fileName: feedId + "_" + Array.from(files.selectedFiles)[file].name,
+          url: `${"https://localhost:8989"}/images/${
+            Array.from(files.selectedFiles)[file].name
+          }`,
+          tags: [],
+        });
+      }
     }
     const feed = {
       index: fData.length < 0 ? fData.lenghth : fData.length,
@@ -68,17 +62,20 @@ export const DashBoard = () => {
       content: content,
       comments: [],
       likes: [],
-      images: filesUrl,
+      images: filesUrl.length != 0 ? filesUrl : undefined,
       feedId: feedId,
     };
     if (content < 3) {
       Snackbar("Please type feed message or image", "warning");
     } else {
       dispatch(addFeed(feed));
-      dispatch(addFeedFiles(files));
-      setFiles({
-        selectedFiles: null,
-      });
+      if (files.selectedFiles != undefined) {
+        dispatch(addFeedFiles(files));
+        setFiles({
+          selectedFiles: null,
+        });
+        dispatch(fData);
+      }
       setContent("");
     }
   };
@@ -157,3 +154,8 @@ export const DashBoard = () => {
     </>
   );
 };
+export function getRandomIntInclusive(min, max) {
+  min = Math.ceil(min);
+  max = Math.floor(max);
+  return Math.floor(Math.random() * (max - min + 1)) + min;
+}

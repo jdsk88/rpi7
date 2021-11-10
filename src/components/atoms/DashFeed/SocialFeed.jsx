@@ -35,7 +35,8 @@ import {
 import moment from "moment";
 import { Box } from "@mui/system";
 import { useDispatch } from "react-redux";
-import { addFComment } from "../../../reducers/feeds";
+import { addFComment, feedsData } from "../../../reducers/feeds";
+import { getRandomIntInclusive } from "../../../views/Dashboard";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -49,12 +50,12 @@ const ExpandMore = styled((props) => {
 }));
 
 export const SocialFeed = ({ feed }) => {
-  console.log(feed)
   const uData = useSelector(userData);
   const [user, setUser] = useState(uData);
   const CHARACTER_LIMIT = 255;
   const [likes] = useState({ userId: user._id, like: false });
   const [like, setLike] = useState(false);
+  const lastComment = feed.comments.at(-1);
   const handleLike = () => {
     if (!like === true) {
       likes.like = true;
@@ -67,45 +68,70 @@ export const SocialFeed = ({ feed }) => {
   const [values, setValues] = React.useState({
     name: "",
   });
+
   const [files, setFiles] = useState({
-    selectedCFiles: undefined,
+    selectedFiles: undefined,
   });
+  const onFilesChange = async (files) => {
+    if (files.length !== 0) {
+      setFiles({
+        selectedFiles: files,
+      });
+    }
+  };
+
+  // const [files, setFiles] = useState({
+  //   selectedCFiles: undefined,
+  // });
   const { enqueueSnackbar } = useSnackbar();
   const Snackbar = (msg, variant, v) => {
     enqueueSnackbar(msg, { variant });
   };
-  const onFilesChange = async (files) => {
-    if (files.length !== 0) {
-      setFiles({
-        selectedCFiles: window.URL.createObjectURL(files[0]),
-        loaded: 0,
-      });
-    }
-  };
+  // const onFilesChange = async (files) => {
+  //   if (files.length !== 0) {
+  //     setFiles({
+  //       selectedCFiles: window.URL.createObjectURL(files[0]),
+  //       loaded: 0,
+  //     });
+  //   }
+  // };
   const handleChange = (name) => (event) => {
     setValues({ ...values, [name]: event.target.value });
   };
-  useEffect(() => {
-    setUser(uData);
-  }, [uData]);
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState(false);
   const [commentsExpanded, setCommentsExpanded] = useState(false);
   const handleAddComment = (event) => {
     event.preventDefault();
+    const commentId = getRandomIntInclusive(1000000000, 9999999999);
+    let filesUrl = [];
+    console.log(files);
+    if (files.selectedFiles != undefined) {
+      for (let file in Array.from(files.selectedFiles)) {
+        filesUrl.push({
+          fileName:
+            commentId + "_" + Array.from(files.selectedFiles)[file].name,
+          url: `${"https://localhost:8989"}/images/${
+            Array.from(files.selectedFiles)[file].name
+          }`,
+          tags: [],
+        });
+      }
+    }
     const comment = {
-      feedId: feed.feedId,
+      feedId: feed._id,
       feedIndex: feed.index,
       userId: user._id,
       userName: user.first_name,
       userAvatar: user.avatar,
       message: values.name,
       dateOfComment: moment().format("lll"),
-      image: files,
+      image: filesUrl,
     };
     if (values.name <= 3) {
       Snackbar("Please type comment message", "warning");
     } else {
+      console.log(comment);
       dispatch(addFComment(comment));
       setFiles({
         selectedCFiles: undefined,
@@ -117,11 +143,15 @@ export const SocialFeed = ({ feed }) => {
   const handleExpandClick = () => {
     setExpanded(!expanded);
   };
+
   const handleExpandComments = () => {
     setCommentsExpanded(!commentsExpanded);
   };
 
-  // const lastComment = feed.comments.at(-1);
+  useEffect(() => {
+    setUser(uData);
+    }, [uData]);
+
   return (
     <Card style={{ marginBottom: 5, maxWidth: 750 }}>
       <CardHeader
@@ -137,16 +167,16 @@ export const SocialFeed = ({ feed }) => {
         title={feed.title}
         subheader={feed.subTitle}
       />
-      {feed.images !== undefined ? (
-        <CardMedia
-          component="img"
-          style={{ objectFit: "cover" }}
-          image={feed.images ? feed.images[0].url : ""}
-          alt={feed.subTitle}
-        />
-      ) : (
-        <></>
-      )}
+      {/* {feed.images <= 0 ? ( */}
+      <CardMedia
+        component="img"
+        style={{ objectFit: "cover" }}
+        image={feed.images != 0 ? feed.images[0].url : ""}
+        alt={feed.subTitle}
+      />
+      {/* ) : ( */}
+      <></>
+      {/* )} */}
       <CardContent>
         <Typography
           variant="body2"
@@ -263,7 +293,7 @@ export const SocialFeed = ({ feed }) => {
             textAlign: "left",
           }}
         >
-          {/* <ListItem key={"index"}>
+          <ListItem key={"index"}>
             <ListItemAvatar>
               <Avatar
                 src={lastComment ? lastComment.userAvatar : ""}
@@ -272,66 +302,60 @@ export const SocialFeed = ({ feed }) => {
             </ListItemAvatar>
             <ListItemText
               style={{ overflowWrap: "anywhere" }}
-              primary={lastComment ? `${lastComment.message.substring(0, 20)}...` : " No Comments yet"}
+              primary={
+                lastComment
+                  ? `${lastComment.message.substring(0, 20)}...`
+                  : " No Comments yet"
+              }
               secondary={
                 lastComment
                   ? `${lastComment.userName} at ${lastComment.dateOfComment}`
                   : ""
               }
-            /> */}
-          <ExpandMore
-            style={{ width: "15%", display: "flex", flexDirection: "column" }}
-            expand={commentsExpanded}
-            onClick={handleExpandComments}
-          >
-            {commentsExpanded ? (
-              <>
-                <ArrowUpward />
-                <Typography>less</Typography>
-              </>
-            ) : (
-              <>
-                <ArrowDownward />
-                <Typography>more</Typography>
-              </>
-            )}
-          </ExpandMore>
-          {/* </ListItem> */}
+            />
+            <ExpandMore
+              style={{ width: "15%", display: "flex", flexDirection: "column" }}
+              expand={commentsExpanded}
+              onClick={handleExpandComments}
+            >
+              {commentsExpanded ? (
+                <>
+                  <ArrowUpward />
+                  <Typography>less</Typography>
+                </>
+              ) : (
+                <>
+                  <ArrowDownward />
+                  <Typography>more</Typography>
+                </>
+              )}
+            </ExpandMore>
+          </ListItem>
         </CardContent>
         <CardContent>
           <Collapse in={commentsExpanded} timeout="auto" unmountOnExit>
             <div style={{ display: "flex", flexDirection: "column-reverse" }}>
               {feed.comments
                 ? feed.comments.map((comment, index) => (
-                    // console.log(comment.image),
                     <ListItem key={index}>
                       <div
                         style={{
                           display: "flex",
                           flexDirection: "column",
-                          maxWidth: "90%",
+                          width: "100%",
                           background: "rgb(180,222,233,.2)",
                           borderRadius: "10px 10px 10px 10px",
                         }}
                       >
-                        {/* <br /> */}
-                        {comment.image.selectedCFiles !== undefined ? (
-                          <CardMedia
-                            component="img"
-                            style={{
-                              // height: "95%",
-                              // width: "90%",
-                              // margin: "5%",
-                              borderRadius: "10px 10px 0px 0px",
-                              objectFit: "scale-down",
-                            }}
-                            image={comment.image.selectedCFiles}
-                            alt={feed.subTitle}
-                          />
-                        ) : (
-                          <></>
-                        )}
-
+                        <CardMedia
+                          component="img"
+                          style={{
+                            borderRadius: "10px 10px 0px 0px",
+                            objectFit: "scale-down",
+                          }}
+                          image={comment.image != 0 ? comment.image : " "}
+                          alt={feed.subTitle}
+                        />
                         <ListItemText
                           style={{
                             width: "100%",

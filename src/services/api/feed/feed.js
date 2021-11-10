@@ -4,22 +4,22 @@ export const FeedsServices = {
   getFeeds: async () => {
     return await api.get("/feeds");
   },
-  createFeed: (params) => {
-    return api.post(`/feeds/create`, params);
+  createFeed: async (params) => {
+    return await api.post(`/feeds/create`, params);
   },
-  addFiles: (params) => {
-    return api.post(`/images/create`, params);
+  addFiles: async (params) => {
+    return await api.post(`/images/create`, params);
   },
-  addFComments: (params) => {
-    return api.put(`/feeds/addComent/${params.feedId}`, params);
+  addFComments: async (params) => {
+    return await api.put(`/feeds/addComment/${params.feedId}`, params);
   },
-  upload: (files) => {
+  upload: async (files) => {
     const filesArray = Array.from(files.selectedFiles);
     let formData = new FormData();
     for (let i = 0; i < filesArray.length; i++) {
       formData.append("files", filesArray[i]);
     }
-    return api.post("/images/create", formData, {
+    return await api.post("/images/create", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },

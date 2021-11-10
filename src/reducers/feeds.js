@@ -3,21 +3,22 @@ import { FeedsServices } from "../services/api/feed/feed";
 
 const initialState = [];
 
-export const addFeed = createAsyncThunk("feeds/create", (data) => {
-  const response = FeedsServices.createFeed(data).then((r) => {
-    return r.data;
-  });
-  return response;
+export const addFeed = createAsyncThunk("feeds/create", async (data) => {
+  const response = await FeedsServices.createFeed(data);
+  return response.data;
 });
 
-export const addFeedFiles = createAsyncThunk("feed/addFiles", (files) => {
-  const response = FeedsServices.upload(files);
+export const addFeedFiles = createAsyncThunk("feed/addFiles", async (files) => {
+  const response = await FeedsServices.upload(files);
   return response;
 });
-export const addFComment = createAsyncThunk("feed/addComments", (data) => {
-  const response = FeedsServices.addFComments(data);
-  return response;
-});
+export const addFComment = createAsyncThunk(
+  "feed/addComments",
+  async (data) => {
+    const response = await FeedsServices.addFComments(data);
+    return response;
+  }
+);
 
 export const fetchFeeds = createAsyncThunk("feeds", async (thunkAPI) => {
   const response = await FeedsServices.getFeeds();
@@ -26,10 +27,10 @@ export const fetchFeeds = createAsyncThunk("feeds", async (thunkAPI) => {
 
 const reducers = {
   addFeed: (state, action) => {
-    return [...state, action.payload];
+    return { feedsData: [...state, action.payload] };
   },
   addFComment: (state, action) => {
-    state[action.payload.feedIndex].comments.push(action.payload);
+    state[action.payload.feedId].comments.push(action.payload);
   },
   addFFiles: (state, action) => {
     state[action.payload.feedIndex].images.forEach((element) => {
@@ -50,13 +51,13 @@ const feedsReducers = createSlice({
   },
   extraReducers: {
     [addFeed.fulfilled.type]: (state, action) => {
+      // console.log(addFeed.fulfilled.type, state, action.payload);
       return [...state, action.payload];
     },
     [addFComment.fulfilled.type]: (state, action) => {
-      state[action.payload.feedIndex].comments.push(action.payload);
+      return state[action.payload.feedId].comments.push(action.payload);
     },
     [fetchFeeds.fulfilled.type]: (state, action) => {
-      console.log(action.payload);
       return {
         ...state,
         feedsData: action.payload,
@@ -67,6 +68,7 @@ const feedsReducers = createSlice({
 
 export const feedsData = {
   get: (state) => state.feeds,
+  getCommets: (state) => state.feeds.comments,
 };
 export const { add, addComment, addFiles } = feedsReducers.actions;
 export default feedsReducers.reducer;
