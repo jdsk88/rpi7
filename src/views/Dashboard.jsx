@@ -6,27 +6,28 @@ import React, { useContext, useEffect, useState } from "react";
 import "./style.css";
 import { useSelector } from "react-redux";
 import { userData } from "../reducers/user";
-import { feedsData } from "../reducers/feeds";
+import {
+  addFeed,
+  addFeedFiles,
+  feedsData,
+} from "../reducers/feeds";
 import moment from "moment";
 import { DataContext } from "../context/DataContext";
 import { useSnackbar } from "notistack";
 import { useDispatch } from "react-redux";
-import { add } from "../reducers/feeds";
-import { FeedsServices } from "../services/api/feed/feed";
 
 export const DashBoard = () => {
   const { location } = useContext(DataContext);
   const uData = useSelector(userData);
   const fData = useSelector(feedsData.get);
   const [user, setUser] = useState(uData);
-
+  const [feeds, setFeeds] = useState([]);
   const [content, setContent] = useState("");
+  const dispatch = useDispatch();
+
   const [files, setFiles] = useState({
     selectedFiles: undefined,
   });
-
-  const dispatch = useDispatch();
-
   const onFilesChange = async (files) => {
     if (files.length !== 0) {
       setFiles({
@@ -46,10 +47,7 @@ export const DashBoard = () => {
   }
   const handleAddFeed = (event) => {
     event.preventDefault();
-    const feedId = getRandomIntInclusive(
-      1000000000000000000000,
-      999999999999999999999
-    );
+    const feedId = getRandomIntInclusive(1000000000, 9999999999);
     let filesUrl = [];
     for (let file in Array.from(files.selectedFiles)) {
       filesUrl.push({
@@ -76,9 +74,8 @@ export const DashBoard = () => {
     if (content < 3) {
       Snackbar("Please type feed message or image", "warning");
     } else {
-      dispatch(add(feed));
-      FeedsServices.createFeed(feed);
-      FeedsServices.upload(files);
+      dispatch(addFeed(feed));
+      dispatch(addFeedFiles(files));
       setFiles({
         selectedFiles: null,
       });
@@ -88,8 +85,8 @@ export const DashBoard = () => {
 
   useEffect(() => {
     setUser(uData);
-  }, [uData]);
-
+    setFeeds(fData.feedsData);
+  }, [uData, fData]);
   return (
     <>
       <Box
@@ -113,7 +110,6 @@ export const DashBoard = () => {
             maxLength: 1024,
           }}
           required
-          // label="Whats up ... ?"
           name="feed_msg"
           id="feed_msg"
           style={{ width: "70%" }}
@@ -126,7 +122,6 @@ export const DashBoard = () => {
             setContent(e.currentTarget.value);
           }}
         />
-
         <input
           type="file"
           accept={".gif, .jpg, .jpeg, .mp4, .png, .svg"}
@@ -142,6 +137,7 @@ export const DashBoard = () => {
             <CameraAltOutlined />
           </IconButton>
         </label>
+
         <IconButton color="primary" style={{ width: "10%" }} type="submit">
           <Send />
         </IconButton>
@@ -152,9 +148,11 @@ export const DashBoard = () => {
           flexDirection: "column-reverse",
         }}
       >
-        {fData.map((feed, index) => (
-          <SocialFeed key={index} feed={feed} />
-        ))}
+        {feeds ? (
+          feeds.map((feed, index) => <SocialFeed key={index} feed={feed} />)
+        ) : (
+          <>no feeds</>
+        )}
       </div>
     </>
   );

@@ -35,7 +35,7 @@ import {
 import moment from "moment";
 import { Box } from "@mui/system";
 import { useDispatch } from "react-redux";
-import { addComment } from "../../../reducers/feeds";
+import { addFComment } from "../../../reducers/feeds";
 
 const ExpandMore = styled((props) => {
   const { expand, ...other } = props;
@@ -49,6 +49,7 @@ const ExpandMore = styled((props) => {
 }));
 
 export const SocialFeed = ({ feed }) => {
+  console.log(feed)
   const uData = useSelector(userData);
   const [user, setUser] = useState(uData);
   const CHARACTER_LIMIT = 255;
@@ -67,7 +68,7 @@ export const SocialFeed = ({ feed }) => {
     name: "",
   });
   const [files, setFiles] = useState({
-    selectedCFiles: null,
+    selectedCFiles: undefined,
   });
   const { enqueueSnackbar } = useSnackbar();
   const Snackbar = (msg, variant, v) => {
@@ -93,6 +94,7 @@ export const SocialFeed = ({ feed }) => {
   const handleAddComment = (event) => {
     event.preventDefault();
     const comment = {
+      feedId: feed.feedId,
       feedIndex: feed.index,
       userId: user._id,
       userName: user.first_name,
@@ -104,9 +106,9 @@ export const SocialFeed = ({ feed }) => {
     if (values.name <= 3) {
       Snackbar("Please type comment message", "warning");
     } else {
-      dispatch(addComment(comment));
+      dispatch(addFComment(comment));
       setFiles({
-        selectedCFiles: null,
+        selectedCFiles: undefined,
       });
       setValues({ name: "" });
     }
@@ -121,7 +123,7 @@ export const SocialFeed = ({ feed }) => {
 
   // const lastComment = feed.comments.at(-1);
   return (
-    <Card style={{ marginBottom: 5 }}>
+    <Card style={{ marginBottom: 5, maxWidth: 750 }}>
       <CardHeader
         avatar={
           <Avatar
@@ -307,19 +309,23 @@ export const SocialFeed = ({ feed }) => {
                         style={{
                           display: "flex",
                           flexDirection: "column",
-                          width: "90%",
+                          maxWidth: "90%",
                           background: "rgb(180,222,233,.2)",
-                          borderRadius: 25,
+                          borderRadius: "10px 10px 10px 10px",
                         }}
                       >
-                        {comment.image.selectedFiles !== null ? (
+                        {/* <br /> */}
+                        {comment.image.selectedCFiles !== undefined ? (
                           <CardMedia
                             component="img"
                             style={{
-                              borderRadius: "25px 25px 0px 0px",
+                              // height: "95%",
+                              // width: "90%",
+                              // margin: "5%",
+                              borderRadius: "10px 10px 0px 0px",
                               objectFit: "scale-down",
                             }}
-                            image={comment.image.selectedFiles}
+                            image={comment.image.selectedCFiles}
                             alt={feed.subTitle}
                           />
                         ) : (

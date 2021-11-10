@@ -10,6 +10,7 @@ import { useDispatch } from "react-redux";
 
 import { userId } from "../services/authorization/auth.js";
 import { geo } from "../services/geocoding/geocoding.js";
+import { fetchFeeds } from "../reducers/feeds.js";
 
 export const Root = () => {
   const { data } = useContext(DataContext);
@@ -48,6 +49,7 @@ export const Root = () => {
 
   useEffect(() => {
     dispatch(fetchUserById(userId.get()));
+    dispatch(fetchFeeds());
   }, [dispatch]);
 
   return (

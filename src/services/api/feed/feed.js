@@ -1,14 +1,17 @@
 import api from "../api";
 
 export const FeedsServices = {
-  getFeeds: () => {
-    return api.get("/feeds");
+  getFeeds: async () => {
+    return await api.get("/feeds");
   },
   createFeed: (params) => {
     return api.post(`/feeds/create`, params);
   },
-  createImage: (params) => {
+  addFiles: (params) => {
     return api.post(`/images/create`, params);
+  },
+  addFComments: (params) => {
+    return api.put(`/feeds/addComent/${params.feedId}`, params);
   },
   upload: (files) => {
     const filesArray = Array.from(files.selectedFiles);
