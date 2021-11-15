@@ -171,8 +171,7 @@ export const SocialFeed = ({ feed }) => {
       <CardMedia
         component="img"
         style={{ objectFit: "cover" }}
-        image={feed.images !== 0 ? feed.images[0].url : ""}
-        // image={feed.images !== 0 ? feed.images[0].url : ""}
+        image={feed.images[0] ? feed.images[0].url : ""}
         alt={feed.subTitle}
       />
       {/* ) : ( */}
