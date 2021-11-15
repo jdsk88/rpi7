@@ -41,7 +41,7 @@ export const DashBoard = () => {
     event.preventDefault();
     const feedId = getRandomIntInclusive(1000000000, 9999999999);
     let filesUrl = [];
-    if (files.selectedFiles != undefined) {
+    if (files.selectedFiles !== undefined) {
       for (let file in Array.from(files.selectedFiles)) {
         filesUrl.push({
           fileName: feedId + "_" + Array.from(files.selectedFiles)[file].name,
@@ -62,14 +62,14 @@ export const DashBoard = () => {
       content: content,
       comments: [],
       likes: [],
-      images: filesUrl.length != 0 ? filesUrl : undefined,
+      images: filesUrl.length !== 0 ? filesUrl : undefined,
       feedId: feedId,
     };
     if (content < 3) {
       Snackbar("Please type feed message or image", "warning");
     } else {
       dispatch(addFeed(feed));
-      if (files.selectedFiles != undefined) {
+      if (files.selectedFiles !== undefined) {
         dispatch(addFeedFiles(files));
         setFiles({
           selectedFiles: null,

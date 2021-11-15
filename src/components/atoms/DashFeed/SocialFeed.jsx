@@ -35,7 +35,7 @@ import {
 import moment from "moment";
 import { Box } from "@mui/system";
 import { useDispatch } from "react-redux";
-import { addFComment, feedsData } from "../../../reducers/feeds";
+import { addFComment } from "../../../reducers/feeds";
 import { getRandomIntInclusive } from "../../../views/Dashboard";
 
 const ExpandMore = styled((props) => {
@@ -106,7 +106,7 @@ export const SocialFeed = ({ feed }) => {
     const commentId = getRandomIntInclusive(1000000000, 9999999999);
     let filesUrl = [];
     console.log(files);
-    if (files.selectedFiles != undefined) {
+    if (files.selectedFiles !== undefined) {
       for (let file in Array.from(files.selectedFiles)) {
         filesUrl.push({
           fileName:
@@ -150,7 +150,7 @@ export const SocialFeed = ({ feed }) => {
 
   useEffect(() => {
     setUser(uData);
-    }, [uData]);
+  }, [uData]);
 
   return (
     <Card style={{ marginBottom: 5, maxWidth: 750 }}>
@@ -171,7 +171,8 @@ export const SocialFeed = ({ feed }) => {
       <CardMedia
         component="img"
         style={{ objectFit: "cover" }}
-        image={feed.images != 0 ? feed.images[0].url : ""}
+        image={feed.images !== 0 ? feed.images[0].url : ""}
+        // image={feed.images !== 0 ? feed.images[0].url : ""}
         alt={feed.subTitle}
       />
       {/* ) : ( */}
@@ -353,7 +354,7 @@ export const SocialFeed = ({ feed }) => {
                             borderRadius: "10px 10px 0px 0px",
                             objectFit: "scale-down",
                           }}
-                          image={comment.image != 0 ? comment.image : " "}
+                          image={comment.image !== 0 ? comment.image : " "}
                           alt={feed.subTitle}
                         />
                         <ListItemText
