@@ -132,7 +132,8 @@ export const SocialFeed = ({ feed }) => {
       Snackbar("Please type comment message", "warning");
     } else {
       console.log(comment);
-      dispatch(addFComment(comment));
+      // dispatch(addFComment(comment));
+      dispatch(feed);
       setFiles({
         selectedCFiles: undefined,
       });
@@ -353,7 +354,7 @@ export const SocialFeed = ({ feed }) => {
                             borderRadius: "10px 10px 0px 0px",
                             objectFit: "scale-down",
                           }}
-                          image={comment.image !== 0 ? comment.image : " "}
+                          image={comment.image !== 0 ? comment.image[0] : " "}
                           alt={feed.subTitle}
                         />
                         <ListItemText

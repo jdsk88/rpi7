@@ -1,6 +1,6 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { FeedsServices } from "../services/api/feed/feed";
-
+const add_comment = createAction("ADD_COMMENT")
 const initialState = [];
 
 export const addFeed = createAsyncThunk("feeds/create", async (data) => {
@@ -16,6 +16,7 @@ export const addFComment = createAsyncThunk(
   "feed/addComments",
   async (data) => {
     const response = await FeedsServices.addFComments(data);
+    console.log(response);
     return response;
   }
 );
@@ -46,7 +47,7 @@ const feedsReducers = createSlice({
   initialState,
   reducers: {
     // add: reducers.addFeed,
-    // addComment: reducers.addFComment,
+    addComment: reducers.addFComment,
     addFiles: reducers.addFFiles,
   },
   extraReducers: {
@@ -63,6 +64,10 @@ const feedsReducers = createSlice({
         feedsData: action.payload,
       };
     },
+//     builder
+//     .addCase(add_comment,(state,action)=>{
+// return state[action.payload.feedId].comments.push(action.payload);
+//     })
   },
 });
 

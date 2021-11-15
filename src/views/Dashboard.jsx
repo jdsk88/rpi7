@@ -22,7 +22,7 @@ export const DashBoard = () => {
   const dispatch = useDispatch();
 
   const [files, setFiles] = useState({
-    selectedFiles: undefined,
+    selectedFiles: null,
   });
   const onFilesChange = async (files) => {
     if (files.length !== 0) {
